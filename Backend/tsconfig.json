@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "sourceMap": true, //Ts files convert to Js file
+        "outDir": "dist", // Converted Js file store in this hidden file
+        "strict": true,
+        "lib": ["esnext"],
+        "esModuleInterop": true,
+    }
+}
