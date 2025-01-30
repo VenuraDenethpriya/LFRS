@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import FoundCounter from "./FoundCounter";
+import { format } from "path";
 
 const FoundReportSchema = new mongoose.Schema({
     name: {
@@ -32,11 +33,14 @@ const FoundReportSchema = new mongoose.Schema({
     },
     dateOfFound: {
         type: Date,
-        required: true
+        required: true,
+        format: 'yyyy-MM-dd'
+
     },
     timeOfFound: {
         type: String,
-        required: true
+        required: true,
+        format: 'HH:mm:ss'
     },
     location: {
         type: String,
@@ -57,24 +61,27 @@ const FoundReportSchema = new mongoose.Schema({
     },
     referanceNo: {
         type: String,
+        readonly: true,
         required: true,
         unique: true,
     },
     createBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        format: 'HH:mm:ss'
     },
     updatedAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        format: 'HH:mm:ss'
     }
 });
 
-FoundReportSchema.pre('save', async function (next) {
+/*FoundReportSchema.pre('save', async function (next) {
     const report = this;
 
     try {
@@ -95,6 +102,24 @@ FoundReportSchema.pre('save', async function (next) {
 
 
 })
+*/
+export default mongoose.model('FoundReport', FoundReportSchema);
 
-const FoundReport = mongoose.model('FoundReport', FoundReportSchema);
-export default FoundReport;
+
+
+
+/* ✅ Generate Random Reference Number Before Saving
+FoundReportSchema.pre('save', async function (next) {
+    if (this.isNew) {
+        // Get current date in YYYYMMDD format
+        const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+
+        // Generate a random 6-digit number
+        const randomPart = Math.floor(100000 + Math.random() * 900000);
+
+        // Combine to form the reference number (e.g., FR-20250130-123456)
+        this.referanceNo = `FR-${datePart}-${randomPart}`;
+    }
+    next();
+});
+*/

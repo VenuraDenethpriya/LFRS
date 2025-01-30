@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import FoundReport from "../infrastructure/schemas/FoundReport";
+import NotFoundError from "../domain/errors/not-found-error";
 
 export const createFoundReport = async(req: Request, res: Response, next: NextFunction) => {
     try {
@@ -15,11 +16,11 @@ export const createFoundReport = async(req: Request, res: Response, next: NextFu
 
 export const getFoundReport = async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const foundReport = await FoundReport.find()
-        if(foundReport){
-            return res.status(200).json(foundReport).send();
+        const foundReport = await FoundReport.find().populate('category')
+        if(!foundReport){
+            throw new NotFoundError("Could not find FoundReports")
         }
-        return res.status(200).send("No found reports found");
+        return res.status(200).json(foundReport).send();
     } catch (error) {
         next(error);
     }
@@ -28,11 +29,11 @@ export const getFoundReport = async(req: Request, res: Response, next: NextFunct
 export const getFoundReportById = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id
-        const foundReport = await FoundReport.findById(id)
-        if(foundReport){
-            return res.status(200).json(foundReport).send();
+        const foundReport = await FoundReport.findById(id).populate('category')
+        if(!foundReport){
+            throw new NotFoundError("Could not find FoundReport")
         }
-        return res.status(200).send("No found report found");
+        return res.status(200).json(foundReport).send();
     } catch (error) {
         next(error);
     }
@@ -42,10 +43,10 @@ export const updateFoundReport = async(req: Request, res: Response, next: NextFu
     try {
         const id = req.params.id
         const foundReport = await FoundReport.findByIdAndUpdate(id, req.body)
-        if(foundReport){
-            return res.status(200).json(foundReport).send("Your found report has been updated");
+        if(!foundReport){
+           throw new NotFoundError("Could not find FoundReport")
         }
-        return res.status(200).send("No found report found");
+         return res.status(200).json(foundReport).send("Your found report has been updated");
     } catch (error) {
         next(error);
     }
@@ -55,10 +56,10 @@ export const deleteFoundReport = async(req: Request, res: Response, next: NextFu
     try {
         const id = req.params.id
         const foundReport = await FoundReport.findByIdAndDelete(id)
-        if(foundReport){
-            return res.status(200).send("You have successfully deleted the report");
+        if(!foundReport){
+           throw new NotFoundError("Could not find FoundReport")
         }
-        return res.status(200).send("No found report found");
+        return res.status(200).send("You have successfully deleted the report");
     } catch (error) {
         next(error)
     }

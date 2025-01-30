@@ -32,11 +32,13 @@ const LostReportSchema = new mongoose.Schema({
     },
     dateOfLost: {
         type: Date,
-        required: true
+        required: true,
+        format: 'yyyy-MM-dd'
     },
     timeOfLost: {
         type: String,
-        required: true
+        required: true,
+        format: 'HH:mm:ss'
     },
     location: {
         type: String,
@@ -57,6 +59,7 @@ const LostReportSchema = new mongoose.Schema({
     },
     referanceNo: {
         type: String,
+        readonly: true,
         required: true,
         unique: true,
     },
@@ -66,16 +69,18 @@ const LostReportSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        format: 'HH:mm:ss'
     },
     updatedAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        format: 'HH:mm:ss'
     }
 
 })
 
-LostReportSchema.pre('save', async function (next) {
+/*LostReportSchema.pre('save', async function (next) {
     const report = this;
     try {
         if (report.isNew) {
@@ -91,5 +96,6 @@ LostReportSchema.pre('save', async function (next) {
         console.log(error);
     }
 })
+*/
 
 export default mongoose.model('LostReport', LostReportSchema)

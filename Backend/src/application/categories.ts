@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Category from "../infrastructure/schemas/Category";
-import exp from "constants";
+import NotFoundError from "../domain/errors/not-found-error";
 
 
 export const createCaregory = async (req: Request, res: Response, next: NextFunction)=> {
@@ -17,10 +17,10 @@ export const createCaregory = async (req: Request, res: Response, next: NextFunc
 export const getCategories = async (req: Request, res: Response, next: NextFunction)=> {
     try {
         const category = await Category.find()
-        if (category) {
-            return res.status(200).json(category).send("All categories")
+        if (!category) {
+            throw new NotFoundError(`Category not found`);
         }
-        return res.status(404).send("No category")
+        return res.status(200).json(category).send("All categories")
     } catch (error) {
         next(error);
     }
@@ -30,10 +30,10 @@ export const deleteCategory = async (req: Request, res: Response, next: NextFunc
     try {
         const id = req.params.id;
         const category = await Category.findByIdAndDelete(id)
-        if(category){
-            return res.status(200).send("You successfully deleteed the category")
+        if(!category){
+            throw new NotFoundError(`Category not found`);
         }
-        return res.status(200).send("Not found")
+        return res.status(200).send("You successfully deleteed the category")
     } catch (error) {
         next(error)
     }
@@ -43,10 +43,10 @@ export const updateCategory = async (req: Request, res: Response, next: NextFunc
     try {
         const id = req.params.id;
         const category = await Category.findByIdAndUpdate(id, req.body)
-        if (category) {
-            return res.status(200).json(category).send("You have updated the category")
+        if (!category) {
+           throw new NotFoundError("Category not found")
         }
-        return res.status(404).send("No category found")
+        return res.status(200).json(category).send("You have updated the category")
     } catch (error) {
         next(error)
     }

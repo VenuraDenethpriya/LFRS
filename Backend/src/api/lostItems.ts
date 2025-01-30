@@ -3,6 +3,15 @@ import { createLostReport, deleteLostReport, getLostProductByCategory, geTLostRe
 import { asyncHandler } from "../utils";
 
 export const lostRouter = express.Router();
-lostRouter.route('/').post(asyncHandler(createLostReport)).get(asyncHandler(geTLostReport));
-lostRouter.route('/:id').get(asyncHandler(getLostReportById)).patch(asyncHandler(UpdateReport)).delete(asyncHandler(deleteLostReport));
-lostRouter.route('/:category').get(asyncHandler(getLostProductByCategory))
+lostRouter
+    .route('/')
+    .post(asyncHandler(createLostReport))
+    .get(asyncHandler(geTLostReport));
+
+
+lostRouter
+    .route('/:id')
+    .get(asyncHandler(getLostReportById))
+    .patch(asyncHandler(UpdateReport))
+    .delete(asyncHandler(deleteLostReport))
+    .get(asyncHandler(getLostProductByCategory));
