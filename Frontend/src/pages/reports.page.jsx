@@ -18,8 +18,8 @@ export default function ItemReports() {
     //const [lostError, setLostError] = useState({ isLostError: false, message: '' })
     //const [foundError, setFoundError] = useState({ isFoundError: false, message: '' })
 
-    const { data:lostReports, isLoading:isLostLoading, isError:isLostError, error:lostError } = useGetLostReportsQuery()
-    const { data:foundReports, isLoading:isFoundLoading, isError:isFoundError, error:foundError } = useGetFoundReportsQuery()
+    const { data: lostReports, isLoading: isLostLoading, isError: isLostError, error: lostError } = useGetLostReportsQuery()
+    const { data: foundReports, isLoading: isFoundLoading, isError: isFoundError, error: foundError } = useGetFoundReportsQuery()
 
 
     /*useEffect(() => {
@@ -56,7 +56,7 @@ export default function ItemReports() {
             });
         }
     }, [isLostError, isFoundError, lostError, foundError]);
-    
+
 
     if (isLostLoading || isFoundLoading) {
         return (
@@ -208,13 +208,16 @@ export default function ItemReports() {
                                 {foundReports.map(report => (
                                     <FoundCard
                                         key={report._id}
+                                        id={report._id}
                                         item={report.items}
                                         name={report.name}
-                                        date={report.dateOfLost}
+                                        date={report.dateOfFound}
                                         location={report.location}
                                         station={report.nearestPoliceStation}
-                                        update={report.updatedAt}
+                                        updatedAt={report.updatedAt}
                                         status={report.status}
+                                        referanceNo={report.referanceNo}
+                                        phoneNo={report.phoneNo}
                                         type="found"
                                     />
                                 ))}

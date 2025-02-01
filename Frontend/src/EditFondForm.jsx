@@ -11,12 +11,14 @@ import { Button } from "./components/ui/button";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "./components/ui/input";
 import { useNavigate } from "react-router";
-import { useUpdateLostReportMutation } from "./lib/api";
+import { useUpdateFoundReportMutation } from "./lib/api";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-function EditLostForm(props) {
-    const [updateLostReport, { isSuccess, isError, error }] = useUpdateLostReportMutation()
+
+function EditFoundForm(props) {
+
+    const [updateFoundReport, { isSuccess, isError, error }] = useUpdateFoundReportMutation()
     const navigate = useNavigate()
 
     const [id, setId] = useState('')
@@ -26,7 +28,6 @@ function EditLostForm(props) {
     const [phoneNo, setPhoneNo] = useState(props.phoneNo)
     const [location, setLocation] = useState(props.location)
     const [station, setStation] = useState(props.station)
-
 
     const handleItesChange = (e) => setItems(e.target.value)
     const handleNameChange = (e) => setName(e.target.value)
@@ -63,7 +64,7 @@ function EditLostForm(props) {
         }
     
         try {
-            await updateLostReport({
+            await updateFoundReport({
                 id,
                 body: { items, name, date, location, phoneNo, station }
             });
@@ -71,7 +72,7 @@ function EditLostForm(props) {
             console.error("Update failed:", error);
         }
     };
-    return (
+    return ( 
         <>
             <Dialog>
                 <DialogTrigger asChild>
@@ -79,9 +80,9 @@ function EditLostForm(props) {
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                        <DialogTitle>Edit Lost Report</DialogTitle>
+                        <DialogTitle>Edit Found Report</DialogTitle>
                         <DialogDescription>
-                            Make changes to your lost report. Click save when you're done.
+                            Make changes to your found report. Click save when you're done.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
@@ -168,8 +169,7 @@ function EditLostForm(props) {
                 </DialogContent>
             </Dialog>
         </>
-
-    );
+     );
 }
 
-export default EditLostForm;
+export default EditFoundForm;

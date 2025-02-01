@@ -32,6 +32,14 @@ export const reportApi = createApi({
           body,
         }),
       }),
+      // POST request for found endpoint |  body = POST
+    createFoundReports: builder.mutation({
+      query: (body) => ({
+        url: "founditem",
+        method: "POST",
+        body,
+      }),
+    }),
       updateLostReport: builder.mutation({
         query: ({ id, body }) => ({
           url: `lostitem/${id}`,
@@ -39,10 +47,17 @@ export const reportApi = createApi({
           body,
         }),
       }),
+      updateFoundReport: builder.mutation({
+        query: ({ id, body }) => ({
+          url: `founditem/${id}`,
+          method: "PATCH",
+          body,
+        }),
+      }),
     }),
 });
 
-export const { useGetLostReportsQuery, useGetFoundReportsQuery, useGetCategoriesQuery, useCreateLostReportsMutation, useUpdateLostReportMutation  } = reportApi;
+export const { useGetLostReportsQuery, useGetFoundReportsQuery, useGetCategoriesQuery, useCreateLostReportsMutation, useUpdateLostReportMutation, useCreateFoundReportsMutation, useUpdateFoundReportMutation  } = reportApi;
 
 /*
 export const getLostReports = async () => {

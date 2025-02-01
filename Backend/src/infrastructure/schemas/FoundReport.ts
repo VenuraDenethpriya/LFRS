@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
-import FoundCounter from "./FoundCounter";
-import { format } from "path";
+
+const generateReferenceNo = () => {
+    return `FR-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+};
 
 const FoundReportSchema = new mongoose.Schema({
     name: {
@@ -16,13 +18,13 @@ const FoundReportSchema = new mongoose.Schema({
         required: true
     },
     items: {
-        type: [String],
+        type: String,
         required: true
     },
     category: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Category',
-        required: true
+        type: [String],
+        //ref: 'Category',
+        //required: true
     },
     description: {
         type: String,
@@ -46,28 +48,30 @@ const FoundReportSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    distric: {
+    district: {
         type: String,
         required: true
     },
     nearestPoliceStation: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
+        //type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     status: {
         type: String,
-        enum: ['FOUND', 'IMFORMED', 'COLLECTED', 'REMOVED', 'NOT COLLECTED'],
+        enum: ['FOUND', 'IMFORMED', 'COLLECTED', 'HANDOVER', 'REMOVED', 'NOT COLLECTED'],
         default: 'FOUND'
     },
     referanceNo: {
         type: String,
-        readonly: true,
-        required: true,
+        require: true,
         unique: true,
+        default: generateReferenceNo
     },
     createBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        type: String
+        //type: mongoose.Schema.Types.ObjectId,
+        //ref: 'User',
     },
     createdAt: {
         type: Date,

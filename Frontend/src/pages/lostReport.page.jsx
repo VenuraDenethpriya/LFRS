@@ -63,7 +63,7 @@ function LostReport() {
 
         }
     }, [isSuccess, navigate])
-    console.log(items)
+    //console.log(items)
     useEffect(() => {
         if (isError) {
             toast.error(error?.message || 'Failed to create lost report, please try again')

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import LostCounter from "./LostCounter";
 
 
 const generateReferenceNo = () => {
