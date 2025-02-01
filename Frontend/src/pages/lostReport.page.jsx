@@ -134,7 +134,7 @@ function LostReport() {
     }
 
     return (
-        <section className="py-12 bg-slate-50 flex justify-center">
+        <section className="py-12 bg-blue-50 flex justify-center">
             <form action="" method="POST" onSubmit={handleSubmit} className="bg-slate-100 rounded-xl px-4 py-8 max-w-[800px] shadow-2xl">
                 <h2 className="text-2xl font-bold text-blue-950 pb-4">Lost Item Report</h2>
 

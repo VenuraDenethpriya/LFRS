@@ -156,7 +156,7 @@ export default function ItemReports() {
     }
 
     return (
-        <section className="bg-slate-50 min-h-screen">
+        <section className="bg-slate-50 pt-8 min-h-screen">
             <div className="container mx-auto p-4">
                 <h1 className="text-3xl font-bold text-blue-950 mb-6">Lost and Found Items Reports</h1>
 
@@ -181,10 +181,18 @@ export default function ItemReports() {
                                         id={report._id}
                                         item={report.items}
                                         name={report.name}
-                                        date={report.dateOfLost}
+                                        date={new Date(report.dateOfLost).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric'
+                                        })}
                                         location={report.location}
                                         station={report.nearestPoliceStation}
-                                        updatedAt={report.updatedAt}
+                                        updatedAt={new Date(report.updatedAt).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric'
+                                        })}
                                         status={report.status}
                                         referanceNo={report.referanceNo}
                                         phoneNo={report.phoneNo}
@@ -211,10 +219,18 @@ export default function ItemReports() {
                                         id={report._id}
                                         item={report.items}
                                         name={report.name}
-                                        date={report.dateOfFound}
+                                        date={new Date(report.dateOfFound).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric'
+                                        })}
                                         location={report.location}
                                         station={report.nearestPoliceStation}
-                                        updatedAt={report.updatedAt}
+                                        updatedAt={new Date(report.updatedAt).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric'
+                                        })}
                                         status={report.status}
                                         referanceNo={report.referanceNo}
                                         phoneNo={report.phoneNo}

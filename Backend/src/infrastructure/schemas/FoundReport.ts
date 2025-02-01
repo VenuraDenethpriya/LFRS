@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
 
 const generateReferenceNo = () => {
-    return `FR-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const min = 100000; // 6 digits min
+    const max = 99999999; // 8 digits max
+    const randomNum = Math.floor(min + Math.random() * (max - min));
+    return `FR-${randomNum}`;
 };
 
 const FoundReportSchema = new mongoose.Schema({
@@ -59,7 +62,7 @@ const FoundReportSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['FOUND', 'IMFORMED', 'COLLECTED', 'HANDOVER', 'REMOVED', 'NOT COLLECTED'],
+        enum: ['FOUND', 'IMFORMED', 'HANDOVER', 'REMOVED', 'NOT COLLECTED'],
         default: 'FOUND'
     },
     referanceNo: {
