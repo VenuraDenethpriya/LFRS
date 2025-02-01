@@ -1,15 +1,19 @@
 import { Response, Request, NextFunction } from "express";
 import LostReport from "../infrastructure/schemas/LostReport";
 import NotFoundError from "../domain/errors/not-found-error";
+import { getAuth } from "@clerk/express";
 
 
 export const createLostReport = async(req:Request, res:Response, next:NextFunction) => {
     try {
+        //const createdBy = getAuth(req).userId;
+        //const report = await LostReport.create({createdBy, ...req.body})
         const report = await LostReport.create(req.body)
         if (report) {
-            return res.status(201).json(report).send("You have successfully created a report")
+            return res.status(201).json({message: "You have successfully created a report"})
         }
-        return res.status(200).send('Something went wrong try again')
+        
+        return res.status(200).json({message: 'Something went wrong try again'})
     }
     catch (error) {
         next(error)

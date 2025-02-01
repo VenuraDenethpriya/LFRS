@@ -1,6 +1,10 @@
+import { SignIn } from "@clerk/clerk-react";
+
 function LoginPage() {
     return ( 
-        <h1>Login</h1>
+        <main className="flex  justify-center pt-20 min-h-screen">
+            <SignIn/>
+        </main>
      );
 }
 

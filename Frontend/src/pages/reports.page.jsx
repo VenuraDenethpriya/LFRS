@@ -2,23 +2,27 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import LostCard from "@/LostCard"
 import FoundCard from "@/FoundCard"
-import { useEffect, useState } from "react"
-import { getFoundReports, getLostReports } from "@/lib/api"
+import { useEffect } from "react"
+import { useGetFoundReportsQuery, useGetLostReportsQuery } from "@/lib/api"
 import LoadCard from "@/LoadCard"
 import { ToastContainer, toast } from 'react-toastify';
 
+
 export default function ItemReports() {
-    const [lostReports, setLostReports] = useState([])
-    const [foundReports, setFoundReports] = useState([])
+    //const [lostReports, setLostReports] = useState([])
+    //const [foundReports, setFoundReports] = useState([])
 
-    const [isLostLoading, setLostLoading] = useState(true)
-    const [isFoundLoading, setFoundLoading] = useState(true)
+    //const [isLostLoading, setLostLoading] = useState(true)
+    //const [isFoundLoading, setFoundLoading] = useState(true)
 
-    const [lostError, setLostError] = useState({ isLostError: false, message: '' })
-    const [foundError, setFoundError] = useState({ isFoundError: false, message: '' })
+    //const [lostError, setLostError] = useState({ isLostError: false, message: '' })
+    //const [foundError, setFoundError] = useState({ isFoundError: false, message: '' })
+
+    const { data:lostReports, isLoading:isLostLoading, isError:isLostError, error:lostError } = useGetLostReportsQuery()
+    const { data:foundReports, isLoading:isFoundLoading, isError:isFoundError, error:foundError } = useGetFoundReportsQuery()
 
 
-    useEffect(() => {
+    /*useEffect(() => {
         getLostReports()
             .then((data) => {
                 setLostReports(data);
@@ -28,7 +32,7 @@ export default function ItemReports() {
             })
             .finally(() => setLostLoading(false))
     }, []);
-
+    
     useEffect(() => {
         getFoundReports()
             .then((data) => {
@@ -38,14 +42,21 @@ export default function ItemReports() {
                 setFoundError({ isFoundError: true, message: error.message })
             }).finally(() => setFoundLoading(false))
     }, []);
+    */
 
     useEffect(() => {
-        if (lostError.isLostError || foundError.isFoundError) {
-            toast.error(lostError.message || foundError.message, {
-                className:"messagePosition"
-            })
+        if (isLostError) {
+            toast.error(lostError?.message || "An error occurred while fetching lost reports.", {
+                className: "messagePosition"
+            });
         }
-    })
+        if (isFoundError) {
+            toast.error(foundError?.message || "An error occurred while fetching found reports.", {
+                className: "messagePosition"
+            });
+        }
+    }, [isLostError, isFoundError, lostError, foundError]);
+    
 
     if (isLostLoading || isFoundLoading) {
         return (
@@ -106,7 +117,7 @@ export default function ItemReports() {
     }
 
 
-    if (lostError.isLostError || foundError.isFoundError) {
+    if (isLostError || isFoundError) {
         return (
             <section className="bg-slate-50 min-h-screen">
                 <div className="container mx-auto p-4">
@@ -123,7 +134,7 @@ export default function ItemReports() {
                                     <CardTitle>Lost Items Reports</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <LoadCard/>
+                                    <LoadCard />
                                 </CardContent>
 
                             </Card>
@@ -133,7 +144,7 @@ export default function ItemReports() {
                                 <CardHeader>
                                     <CardTitle>Found Items Reports</CardTitle>
                                 </CardHeader>
-                                <LoadCard/>
+                                <LoadCard />
                                 <CardContent>
                                 </CardContent>
                             </Card>
@@ -167,13 +178,16 @@ export default function ItemReports() {
                                 {lostReports.map(report => (
                                     <LostCard
                                         key={report._id}
+                                        id={report._id}
                                         item={report.items}
                                         name={report.name}
                                         date={report.dateOfLost}
                                         location={report.location}
                                         station={report.nearestPoliceStation}
-                                        update={report.updatedAt}
+                                        updatedAt={report.updatedAt}
                                         status={report.status}
+                                        referanceNo={report.referanceNo}
+                                        phoneNo={report.phoneNo}
                                         type="lost"
                                     />
                                 ))}

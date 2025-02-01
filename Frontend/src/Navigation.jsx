@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Button } from "./components/ui/button";
 import { Link } from 'react-router';
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 
 function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isVisited, setIsVisited] = useState(false)
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -13,7 +15,7 @@ function Navigation() {
         <nav className="flex bg-blue-950 text-white px-12 py-8 justify-between">
             {/* Large Nav */}
             <ul className="hidden sm:flex gap-8">
-                <li className="text-2xl hover:text-slate-400"><Link to="/">Home</Link></li>
+                <li className="text-2xl hover:text-slate-400 " onClick={()=> setIsVisited(true)}><Link to="/">Home</Link></li>
                 <li className="pt-1 hover:text-slate-400"><Link to="/reports">Reports</Link></li>
                 <li className="pt-1 hover:text-slate-400"><a href="#">About</a></li>
                 <li className="pt-1 hover:text-slate-400"><a href="#">Contact</a></li>
@@ -39,20 +41,27 @@ function Navigation() {
                 </ul>
             </div>
 
-            <div className="flex gap-4">
+            <SignedIn>
+                <UserButton/>
+            </SignedIn>
+
+            <SignedOut>
+                <div className="flex gap-4">
                 <div>
-                    <Link to="/login">
-                    <Button variant="link">Login</Button>
+                    <Link to="/signin">
+                    <Button variant="link">Signin</Button>
                     </Link>
                     
                 </div>
                 <div>
-                    <Link to="/signin">
-                    <Button variant="outline">Signin</Button>
+                    <Link to="/signup">
+                    <Button variant="outline">Signup</Button>
                     </Link>
                     
                 </div>
             </div>
+            </SignedOut>
+            
         </nav>
     );
 }

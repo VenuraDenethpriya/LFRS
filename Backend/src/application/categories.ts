@@ -20,7 +20,7 @@ export const getCategories = async (req: Request, res: Response, next: NextFunct
         if (!category) {
             throw new NotFoundError(`Category not found`);
         }
-        return res.status(200).json(category).send("All categories")
+        return res.status(200).json(category)
     } catch (error) {
         next(error);
     }

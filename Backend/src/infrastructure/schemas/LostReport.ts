@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 import LostCounter from "./LostCounter";
 
+
+const generateReferenceNo = () => {
+    return `LR-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+};
+
 const LostReportSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -15,17 +20,17 @@ const LostReportSchema = new mongoose.Schema({
         required: true
     },
     items: {
-        type: [String],
+        type: String,
         required: true
     },
     category: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Category',
+        type: [String],
         required: true
+        //type: [mongoose.Schema.Types.ObjectId],
+        //ref: 'Category'
     },
     description: {
-        type: String,
-        required: true
+        type: String
     },
     image: {
         type: [String]
@@ -44,12 +49,13 @@ const LostReportSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    distric: {
+    district: {
         type: String,
         required: true
     },
     nearestPoliceStation: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
+        //type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     status: {
@@ -59,13 +65,12 @@ const LostReportSchema = new mongoose.Schema({
     },
     referanceNo: {
         type: String,
-        readonly: true,
-        required: true,
+        require: true,
         unique: true,
+        default: generateReferenceNo
     },
     createBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: String,
     },
     createdAt: {
         type: Date,
@@ -79,6 +84,10 @@ const LostReportSchema = new mongoose.Schema({
     }
 
 })
+
+export default mongoose.model('LostReport', LostReportSchema)
+
+
 
 /*LostReportSchema.pre('save', async function (next) {
     const report = this;
@@ -97,5 +106,3 @@ const LostReportSchema = new mongoose.Schema({
     }
 })
 */
-
-export default mongoose.model('LostReport', LostReportSchema)

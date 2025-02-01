@@ -20,13 +20,13 @@ function Hero() {
                 <div className="flex justify-center gap-4 py-8">
                     <Link to="/lostreport">
                     <Button variant="outline" className="border-2 text-red-700 border-red-600 bg-red-300 shadow-sm hover:bg-red-600 hover:text-white">
-                        Lost Item
+                        Lost Report
                     </Button>
                     </Link>
                     
                     <Link to="/foundreport">
                     <Button variant="outline" className="border-2 text-lime-700 border-lime-700 bg-lime-200 shadow-sm hover:bg-lime-500 hover:text-white">
-                        Found Item
+                        Found Report
                     </Button>
                     </Link>
                 </div>

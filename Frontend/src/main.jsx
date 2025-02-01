@@ -8,24 +8,44 @@ import { BrowserRouter, Route, Routes } from 'react-router'
 import LostReportPage from './pages/lostReport.page'
 import FoundReportPage from './pages/foundReport.page'
 import RootLayout from './layouts/root.page'
-import SigninPage from './pages/signin.page'
 import LoginPage from './pages/login.page'
 import ReportPage from './pages/reports.page'
+import { Provider } from "react-redux";
+import { store } from "./lib/store";
+import { ClerkProvider } from "@clerk/clerk-react";
+import SignUpPage from "./pages/signin.page";
+import TestPage from "./pages/test.page";
+import EditLostForm from "./EditLostForm";
+
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Publishable Key")
+}
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ToastContainer autoClose={3000} />
-    <BrowserRouter>
-      <Routes>
-        <Route element={<RootLayout/>}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/lostreport" element={<LostReportPage />} />
-          <Route path="/foundreport" element={<FoundReportPage />} />
-          <Route path="/reports" element={<ReportPage/>}/>
-        </Route>
-        <Route path="/login" element={<LoginPage/>} />
-        <Route path="/signin" element={<SigninPage/>}/>
-      </Routes>
-    </BrowserRouter>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<RootLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/lostreport" element={<LostReportPage />} />
+              <Route path="/foundreport" element={<FoundReportPage />} />
+              <Route path="/reports" element={<ReportPage />} />
+              <Route path="/test" element={<TestPage />} />
+            </Route>
+            <Route path="/signin" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </ClerkProvider>
+
+
   </StrictMode>
 )

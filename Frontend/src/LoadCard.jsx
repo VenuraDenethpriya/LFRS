@@ -10,9 +10,9 @@ function LoadCard() {
                     <Skeleton className="h-6 w-3/4" />
                 </h3>
                 <p>
-                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-2/4" />
                 </p>
-                <p>
+                <p className="pt-2">
                     <Skeleton className="h-4 w-1/4" />
                 </p>
                 

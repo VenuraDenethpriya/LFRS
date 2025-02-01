@@ -6,10 +6,16 @@ import { foundRouter } from "./api/foundItems";
 import { categoryRounter } from "./api/category";
 import globalErrorHandlingMiddleware from "./api/middleware/global-error-handling-middleware";
 import cors from 'cors';
+import { clerkMiddleware } from "@clerk/express";
 
 const app = express();
+const publishableKey = process.env.VITE_CLERK_PUBLISHABLE_KEY;
+const secretKey = process.env.VITE_CLERK_SECRET_KEY
 
 app.use(express.json());
+app.use(clerkMiddleware({
+   publishableKey,secretKey
+}))
 app.use(cors({ origin:`http://localhost:5174`}));
 //Pre-middleware
 app.use((req, res, next) => {
