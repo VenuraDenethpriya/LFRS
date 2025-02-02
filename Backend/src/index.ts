@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(clerkMiddleware({
    publishableKey,secretKey
 }))
-app.use(cors({ origin:`http://localhost:5174`}));
+app.use(cors({ origin:`http://localhost:5173`}));
 //Pre-middleware
 app.use((req, res, next) => {
     console.log("Request received")

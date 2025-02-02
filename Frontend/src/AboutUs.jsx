@@ -1,6 +1,6 @@
 function AboutUs() {
     return (
-        <section className="grid grid-cols-1 md:grid-cols-2 p-12 bg-blue-950 text-white">
+        <section id="aboutUs" className="grid grid-cols-1 md:grid-cols-2 p-12 bg-blue-950 text-white">
             <div className="">
                 <h1 className="text-3xl font-bold text-center pt-8">About Us</h1>
                 <p className="p-8 text-justify">

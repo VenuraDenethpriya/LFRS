@@ -20,17 +20,17 @@ export default function Questions() {
     <div className="min-h-fit bg-slate-200 p-6 flex items-center justify-center">
       <Card className="w-full  mx-auto shadow-lg hover:shadow-xl transition-shadow duration-300">
         <CardHeader className="text-center space-y-2">
-          <CardTitle className="text-4xl font-bold text-blue-600">FAQs</CardTitle>
-          <p className="text-blue-600 text-xl">we are here to answer all your questions</p>
+          <CardTitle className="hidden sm:text-4xl font-bold text-blue-600">FAQs</CardTitle>
+          <p className="hidden sm:text-blue-600 text-xl">we are here to answer all your questions</p>
         </CardHeader>
         <CardContent className="flex flex-col items-center p-8">
-          <div className="grid grid-cols-2">
+          <div className="grid sm:grid-cols-2 grid-cols-1">
             <div>
               <div className="w-64 h-64 mb-8">
                 <img
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%20(20)-J3J7ww6SIVq0u8ypPCWGphITafZaOm.png"
                   alt="FAQ Illustration"
-                  className="w-full h-full object-contain"
+                  className="block w-full h-full object-contain"
                 />
               </div>
             </div>

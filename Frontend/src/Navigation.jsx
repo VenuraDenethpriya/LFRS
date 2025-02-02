@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from "./components/ui/button";
-import { Link } from 'react-router';
+import { Link, Navigate } from 'react-router';
 import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 
 function Navigation() {
@@ -11,14 +11,27 @@ function Navigation() {
         setIsOpen(!isOpen);
     };
 
+    const handleAboutScroll = () => {
+        const aboutSection = document.getElementById('aboutUs');
+        if (aboutSection) {
+            aboutSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+    const handleContactScroll = () => {
+        const contactSection = document.getElementById('footer');
+        if (contactSection) {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
     return (
         <nav className="flex bg-blue-950 text-white px-12 py-8 justify-between">
             {/* Large Nav */}
             <ul className="hidden sm:flex gap-8">
                 <li className="text-2xl hover:text-slate-400 " onClick={()=> setIsVisited(true)}><Link to="/">Home</Link></li>
                 <li className="pt-1 hover:text-slate-400"><Link to="/reports">Reports</Link></li>
-                <li className="pt-1 hover:text-slate-400"><a href="#">About</a></li>
-                <li className="pt-1 hover:text-slate-400"><a href="#">Contact</a></li>
+                <li className="pt-1 hover:text-slate-400"><a href="#aboutUs" onClick={handleAboutScroll}>About</a></li>
+                <li className="pt-1 hover:text-slate-400"><a href="#" onClick={handleContactScroll}>Contact</a></li>
             </ul>
 
             {/* Mobile Hamburger Menu */}
@@ -36,8 +49,8 @@ function Navigation() {
                 <ul className="flex flex-col items-center py-4">
                     <li className="text-md hover:text-slate-300 py-2"><Link to="/">Home</Link></li>
                     <li className="pt-1 text-sm hover:text-slate-300 py-2"><Link to="/reports">Reports</Link></li>
-                    <li className="pt-1 text-sm hover:text-slate-300 py-2"><a href="#">About</a></li>
-                    <li className="pt-1 text-sm hover:text-slate-300 py-2"><a href="#">Contact</a></li>
+                    <li className="pt-1 text-sm hover:text-slate-300 py-2"><a href="#" onClick={handleAboutScroll}>About</a></li>
+                    <li className="pt-1 text-sm hover:text-slate-300 py-2"><a href="#" onClick={handleContactScroll}>Contact</a></li>
                 </ul>
             </div>
 

@@ -5,7 +5,7 @@ import { AiFillTikTok } from "react-icons/ai";
 import { MdEmail } from "react-icons/md";
 function Footer() {
     return (
-        <footer className="flex bg-blue-950 text-white px-12 py-6 justify-center">
+        <footer id="footer" className="flex bg-blue-950 text-white px-12 py-6 justify-center">
             <div>
                 <div className="flex gap-4 pl-12 pb-4 text-2xl">
 

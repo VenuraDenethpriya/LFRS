@@ -17,7 +17,7 @@ function FoundCard(props) {
             const id = props.id;
             console.log(id)
             await updateStatus({
-                id, body: { status: "HANDOVER" }
+                id, body: { status: "CLAIMED" }
             })
             toast.success("Status updated successfully!");
             window.location.reload();
@@ -37,41 +37,7 @@ function FoundCard(props) {
         status: props.status
     };
 
-    const renderStatus = () => {
-        if (props.status === 'FOUND') {
-            return (
-                <p className="bg-green-200 w-fit rounded-full px-2">
-                    <span className="font-bold">Status:</span> {props.status}
-                </p>
-            );
-        } else if (props.status === 'COLLECTED') {
-            return (
-                <p className="bg-blue-300 w-fit rounded-full px-2">
-                    <span className="font-bold">Status:</span> {props.status}
-                </p>
-            );
-        } else if (props.status === 'IMFORMED') {
-            return (
-                <p className="bg-amber-200 w-fit rounded-full px-2">
-                    <span className="font-bold">Status:</span> {props.status}
-                </p>
-            );
-        } else if (props.status === 'NOT COLLECTED') {
-            return (
-                <p className="bg-red-300 w-fit rounded-full px-2">
-                    <span className="font-bold">Status:</span> {props.status}
-                </p>
-            );
-        } else if (props.status === 'REMOVED') {
-            return (
-                <p className="bg-rose-50 w-fit rounded-full px-2">
-                    <span className="font-bold">Status:</span> {props.status}
-                </p>
-            );
-        } else {
-            return null;
-        }
-    }
+    
 
     return (
         <div>
@@ -103,11 +69,32 @@ function FoundCard(props) {
                             <p>
                                 <span className="font-medium">ReferenceNo: </span> {props.referanceNo}
                             </p>
-                            {renderStatus()}
+                            {
+                                props.status == 'FOUND' ? (
+                                    <p className="bg-green-200 w-fit rounded-full px-2">
+                                        <span className="font-bold">Status:</span> {props.status}
+                                    </p>
+                                ) : props.status == 'CLAIMED' ? (<p className="bg-cyan-400 w-fit rounded-full px-2">
+                                    <span className="font-bold">Status:</span> {props.status}
+                                </p>
+                                ) : props.status == 'IMFORMED' ? (<p className="bg-amber-200 w-fit rounded-full px-2">
+                                    <span className="font-bold">Status:</span> {props.status}
+                                </p>
+                                ) : props.status == 'COLLECTED' ? (<p className="bg-blue-300 w-fit rounded-full px-2">
+                                    <span className="font-bold">Status:</span> {props.status}
+                                </p>
+                                ) : props.status == 'REMOVED' ? (<p className="bg-rose-50 w-fit rounded-full px-2">
+                                    <span className="font-bold">Status:</span> {props.status}
+                                </p>
+                                ) : props.status == 'NOT COLLECTED' ? (<p className="bg-red-300 w-fit rounded-full px-2">
+                                    <span className="font-bold">Status:</span> {props.status}
+                                </p>
+                                ) : null
+                            }
                         </div>
                     </div>
                     <di  className="flex sm:flex gap-2 sm:justify-end justify-left">
-                        {props.status === 'HANDOVER' ? null : (
+                        {props.status === 'CLAIMED' ? null : (
                             <div className="flex items-center gap-2">
                                 <div className="mt-2">
                                     <EditFoundForm
@@ -125,7 +112,7 @@ function FoundCard(props) {
                                     className="h-10 mt-2"
                                     onClick={handleUpdate}
                                 >
-                                    Handover
+                                    Claimed
                                 </Button>
                                 <PDFDownloadLink
                                     document={<FoundReportTemplate data={reportData} />}

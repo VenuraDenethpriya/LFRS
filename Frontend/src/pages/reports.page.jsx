@@ -210,7 +210,7 @@ export default function ItemReports() {
                             </CardHeader>
                             <CardContent>
                                 {foundReports.length === 0 && (
-                                    <p className="text-center text-gray-600">No lost item report found.</p>
+                                    <p className="text-center text-gray-600">No found item report found.</p>
                                 )}
 
                                 {foundReports.map(report => (

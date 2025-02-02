@@ -229,7 +229,7 @@ function LostReport() {
                             id="category"
                             className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline focus:outline-blue-600"
                             value={category}
-                            onChange={(e)=> {
+                            onChange={(e) => {
                                 handleCategoryChange(e)
                                 handleCategoryChangeValue(e)
                             }}
@@ -337,10 +337,22 @@ function LostReport() {
                             onChange={handleNearestPoliceStationChange}
                         >
                             <option value="">Select a police station</option>
-                            <option value="Kurunegala">Kurunegala</option>
-                            <option value="Gampaha">Gampaha</option>
-                            <option value="Colombo">Colombo</option>
-                            <option value="Anuradhapura">Anuradhapura</option>
+                            <option value="Chavakachcheri">Chavakachcheri Police Station</option>
+                            <option value="Chilaw">Chilaw Police Station</option>
+                            <option value="Chunnakam">Chunnakam Police Station</option>
+                            <option value="Colombo Central">Colombo Central Police Station</option>
+                            <option value="Colombo Fort">Colombo Fort Police Station</option>
+                            <option value="Colombo South">Colombo South Police Station</option>
+                            <option value="Dambulla">Dambulla Police Station</option>
+                            <option value="Dankotuwa">Dankotuwa Police Station</option>
+                            <option value="Dehiwala">Dehiwala Police Station</option>
+                            <option value="Deniyaya">Deniyaya Police Station</option>
+                            <option value="Divulapitiya">Divulapitiya Police Station</option>
+                            <option value="Dompe">Dompe Police Station</option>
+                            <option value="Embilipitiya">Embilipitiya Police Station</option>
+                            <option value="Eravur">Eravur Police Station</option>
+                            <option value="Galagedara">Galagedara Police Station</option>
+                            <option value="Galle">Galle Police Station</option>
 
                         </select>
                     </div>

@@ -13,7 +13,7 @@ const FoundReportSchema = new mongoose.Schema({
         required: true
     },
     phoneNo: {
-        type: Number,
+        type: String,
         required: true
     },
     nic: {
@@ -62,7 +62,7 @@ const FoundReportSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['FOUND', 'IMFORMED', 'HANDOVER', 'REMOVED', 'NOT COLLECTED'],
+        enum: ['FOUND', 'IMFORMED', 'CLAIMED', 'REMOVED', 'NOT COLLECTED'],
         default: 'FOUND'
     },
     referanceNo: {
