@@ -109,7 +109,7 @@ function FoundCard(props) {
                                 </div>
 
                                 <Button
-                                    className="h-10 mt-2"
+                                    className="mt-2 w-fit bg-white text-blue-950 border-2 border-blue-950  hover:text-white"
                                     onClick={handleUpdate}
                                 >
                                     Claimed
@@ -120,7 +120,7 @@ function FoundCard(props) {
                                 >
                                     {({ blob, url, loading, error }) => (
                                         <Button
-                                            className="h-10 mt-2"
+                                            className=" mt-2"
                                             variant="outline"
                                             disabled={loading}
                                         >

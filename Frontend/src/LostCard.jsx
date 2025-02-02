@@ -99,7 +99,7 @@ function LostCard(props) {
 
 
                             {
-                                props.status === 'FOUND' ? <div></div> : <Button className="mt-2 w-fit" onClick={handleUpdate}>
+                                props.status === 'FOUND' ? <div></div> : <Button className="mt-2 w-fit bg-white text-blue-950 border-2 border-blue-950  hover:text-white" onClick={handleUpdate}>
                                     Found
                                 </Button>
                             }
