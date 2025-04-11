@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // Define a service using a base URL and expected endpoints
 export const reportApi = createApi({
   reducerPath: "reportApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://lfrs.onrender.com/api/" }),
   /*prepareHeaders: async (headers, { getState}) => {
     const token = await window.__clerk_domain.session.getToken();
  
