@@ -5,13 +5,21 @@ import { AiTwotoneCloseCircle } from "react-icons/ai";
 import { useCreateFoundReportsMutation, useGetCategoriesQuery } from "@/lib/api";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { useAuth, useUser } from "@clerk/clerk-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { uploadImageToCloudinary } from "@/lib/cloudinery";
 
 function FoundReport() {
+
+    const { isSignedIn } = useAuth()
+    const { user } = useUser()
+    console.log("User:", user.id)
 
     const [crateFoundReport, { isLoading, isError, error, isSuccess }] = useCreateFoundReportsMutation()
     const { data: categoriesList } = useGetCategoriesQuery();
 
     const navigate = useNavigate()
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [name, setName] = useState('')
     const [phoneNo, setPhoneNo] = useState('')
@@ -27,9 +35,9 @@ function FoundReport() {
     const [nearestPoliceStation, setNearestPoliceStation] = useState('')
 
 
-    //const [images, setImages] = useState([]);
-
     const [categoryDisplay, setCategoryDisplay] = useState([])
+    const flatCategory = categoryDisplay.flat();
+    console.log("Category Display:", categoryDisplay)
 
     useEffect(() => {
         if (isSuccess) {
@@ -100,20 +108,50 @@ function FoundReport() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (canSave) {
-            await crateFoundReport({
-                name,
-                phoneNo,
-                nic,
-                items,
-                description,
-                images,
-                category,
-                dateOfFound,
-                timeOfFound,
-                district,
-                location,
-                nearestPoliceStation
-            })
+            setIsSubmitting(true);
+            let imageUrls = [];
+            console.log(imageUrls)
+
+            if (images && images.length > 0) {
+                try {
+                    for (const image of images) {
+                        console.log("Uploading file:", image.name, image.size);
+                        const url = await uploadImageToCloudinary(image);
+                        console.log("Image uploaded successfully:", url);
+                        imageUrls.push(url);
+                    }
+                    console.log("Upload successful, URL:", imageUrls);
+                } catch (uploadError) {
+                    console.error("Failed to upload image:", uploadError);
+                    toast.error("Failed to upload  image. Please try again.", { position: "bottom-right" });
+                    setIsSubmitting(false);
+                    return;
+                }
+            }
+            try {
+                await crateFoundReport({
+                    name,
+                    phoneNo,
+                    nic,
+                    items,
+                    description,
+                    image: imageUrls,
+                    category: flatCategory,
+                    dateOfFound,
+                    timeOfFound,
+                    district,
+                    location,
+                    nearestPoliceStation,
+                    createBy: user.id
+                })
+            } catch (error) {
+                toast.error("Failed to create found report. Please try again.", { position: "bottom-right" });
+                console.error("Error creating found report:", error);
+
+            } finally {
+                setIsSubmitting(false);
+            }
+
         }
     }
 
@@ -124,9 +162,94 @@ function FoundReport() {
         }
     }
 
+    if (!isSignedIn) {
+        navigate('/signin')
+    }
+    if (isLoading) {
+        return (
+            <section className="py-16 px-4 flex justify-center bg-gradient-to-b from-blue-100 via-white to-blue-50">
+                <form
+                    action=""
+                    method="POST"
+                    onSubmit={handleSubmit}
+                    className="bg-white/60 backdrop-blur-md border border-blue-200 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-xl px-6 py-10 max-w-[800px] w-full drop-shadow-xl transition-all duration-300"
+                >
+                    <h2 className="text-2xl font-bold text-blue-950 pb-4">Found Item Report</h2>
+
+                    <Skeleton />
+                    <Skeleton />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2">
+                        <div className="mr-4 ms:mr-0">
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                        <div>
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                    </div>
+
+
+                    <Skeleton />
+                    <Skeleton />
+
+                    <label className="font-semibold" htmlFor="description">Description</label>
+                    <Skeleton />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2">
+                        <div className="mr-4 sm:mr-0">
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                        <div>
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2">
+                        <div className="mr-4 ms:mr-0">
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                        <div>
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                    </div>
+
+                    <Skeleton />
+                    <Skeleton />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2">
+                        <div className="mr-4 ms:mr-0">
+                            <Skeleton />
+                        </div>
+                        <div>
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                    </div>
+                    <div className="flex justify-center py-6">
+                        <Skeleton />
+                    </div>
+
+                </form>
+
+            </section>
+        );
+    }
+
     return (
-        <section className="py-12 bg-blue-50 flex justify-center backdrop:blur-md">
-            <form action="" method="POST" onSubmit={handleSubmit} className="bg-slate-100 rounded-xl px-4 py-8 max-w-[800px] shadow-2xl">
+         <section className="py-16 px-4 flex justify-center bg-gradient-to-b from-blue-100 via-white to-blue-50">
+                <form
+                    action=""
+                    method="POST"
+                    onSubmit={handleSubmit}
+                    className="bg-white/60 backdrop-blur-md border border-blue-200 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-xl px-6 py-10 max-w-[800px] w-full drop-shadow-xl transition-all duration-300"
+                >
                 <h2 className="text-2xl font-bold text-blue-950 pb-4">Found Item Report</h2>
 
                 <label className="font-semibold" htmlFor="name">Name</label>
@@ -273,13 +396,13 @@ function FoundReport() {
                     </div>
                     <div>
                         <label className="font-semibold" htmlFor="timeOfFound">Time of Found</label>
-                        <input 
-                        type="time" 
-                        id="timeOfFound" 
-                        className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
-                        required
-                        value={timeOfFound}
-                        onChange={handleTimeOfFoundChange}
+                        <input
+                            type="time"
+                            id="timeOfFound"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                            required
+                            value={timeOfFound}
+                            onChange={handleTimeOfFoundChange}
                         />
                     </div>
                 </div>
@@ -351,7 +474,7 @@ function FoundReport() {
                 </div>
 
                 <div className="flex justify-center py-6">
-                    <Button type="submit" disabled={!canSave} >Submit Lost Report</Button>
+                    <Button type="submit" disabled={!canSave || isSubmitting} >Submit Lost Report</Button>
                 </div>
 
             </form>

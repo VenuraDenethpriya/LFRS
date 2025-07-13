@@ -6,9 +6,12 @@ import { useUpdateLostReportMutation } from "./lib/api";
 import { toast } from "react-toastify";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import LostReportTemplate from "./components/LostReportTemplate";
+import { useNavigate } from "react-router";
 
 function LostCard(props) {
 
+    
+    const navigate = useNavigate()
     const [updateStatus, { isSuccess, isError }] = useUpdateLostReportMutation()
     //const [id, setId] = useState('')
 
@@ -27,15 +30,32 @@ function LostCard(props) {
             toast.error(isError?.message || "Status updated successfully!");
         }
 
-
+        { props.item }
     }
     return (
         <div>
-            <Card className="mb-4">
-                <CardContent className="p-4">
-                    <h3 className="text-lg font-semibold mb-2">{props.item}</h3>
-                    <div className="sm:grid sm:grid-cols-2 grid-cols-1">
-                        <div>
+            <Card className="mb-4 cursor-pointer">
+                <CardContent className="p-4 cursor-pointer">
+                    <div className="flex flex-col sm:flex-row sm:items-center  gap-2 mb-2">
+                        <h3 className="text-lg font-semibold text-gray-800">{props.referanceNo}</h3>
+
+                        <div className="flex flex-wrap gap-2">
+                            {props.category.map((cat, index) => (
+                                <span
+                                    key={index}
+                                    className="px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium shadow-sm"
+                                >
+                                    {cat}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+
+                    <div
+                        className="sm:grid sm:grid-cols-3 grid-cols-1"
+                    >
+                        <div onClick={() => navigate(`/reports/${props.id}/lost`)}>
                             <p>
                                 <span className="font-medium">Reported by:</span>{props.name}
                             </p>
@@ -46,10 +66,10 @@ function LostCard(props) {
                                 <span className="font-medium">Phone No:</span> {props.phoneNo}
                             </p>
                             <p>
-                                <span className="font-medium">Location:</span> {props.location}
+                                <span className="font-medium">Items:</span> {props.item}
                             </p>
                         </div>
-                        <div>
+                        <div onClick={() => navigate(`/reports/${props.id}/lost`)}>
                             <p>
                                 <span className="font-medium">Nearest Police:</span> {props.station}
                             </p>
@@ -57,7 +77,7 @@ function LostCard(props) {
                                 <span className="font-medium">Updated At:</span> {props.updatedAt}
                             </p>
                             <p>
-                                <span className="font-medium">ReferonceNo:</span> {props.referanceNo}
+                                <span className="font-medium">Location:</span> {props.location}
                             </p>
                             {
                                 props.status == 'FOUND' ? (
@@ -82,47 +102,54 @@ function LostCard(props) {
                                 ) : null
                             }
                         </div>
-                        
-                    </div>
-                    <div className="flex sm:flex gap-2 sm:justify-end justify-left">
-                            {
-                                props.status === 'FOUND' ? <div></div> : <div className="mt-2"><EditLostForm
-                                    item={props.item}
-                                    id={props.id}
-                                    name={props.name}
-                                    date={props.date}
-                                    phoneNo={props.phoneNo}
-                                    location={props.location}
-                                    station={props.station}
-                                /></div>
-                            }
+
+                        <div className="">
+                            <div>
+                                <div>
+                                    <img onClick={() => navigate(`/reports/${props.id}/lost`)} src={props.image} alt="Lost Item" className="w-32 h-32 object-cover rounded-lg" />
+                                </div>
+                                <div className="flex flex-row gap-x-4">
+                                    {
+                                        props.status === 'FOUND' ? <div></div> : <div className="mt-2"><EditLostForm
+                                            item={props.item}
+                                            id={props.id}
+                                            name={props.name}
+                                            date={props.date}
+                                            phoneNo={props.phoneNo}
+                                            location={props.location}
+                                            station={props.station}
+                                        /></div>
+                                    }
 
 
-                            {
-                                props.status === 'FOUND' ? <div></div> : <Button className="mt-2 w-fit bg-white text-blue-950 border-2 border-blue-950  hover:text-white" onClick={handleUpdate}>
-                                    Found
-                                </Button>
-                            }
+                                    {
+                                        props.status === 'FOUND' ? <div></div> : <Button className="mt-2 w-fit bg-white text-blue-950 border-2 border-blue-950  hover:text-white" onClick={handleUpdate}>
+                                            Found
+                                        </Button>
+                                    }
 
-                            {
-                                props.status === 'FOUND' ? <div></div> :
-                                    <PDFDownloadLink
-                                        document={<LostReportTemplate data={props} />}
-                                        fileName={`Lost-Report-${props.referanceNo}.pdf`}
-                                    >
-                                        {({ blob, url, loading, error }) => (
-                                            <Button
-                                                className="mt-2 w-fit"
-                                                variant="outline"
-                                                disabled={loading}
+                                    {
+                                        props.status === 'FOUND' ? <div></div> :
+                                            <PDFDownloadLink
+                                                document={<LostReportTemplate data={props} />}
+                                                fileName={`Lost-Report-${props.referanceNo}.pdf`}
                                             >
-                                                {loading ? 'Generating PDF...' : 'Save Report'}
-                                            </Button>
-                                        )}
-                                    </PDFDownloadLink>
-                            }
+                                                {({ blob, url, loading, error }) => (
+                                                    <Button
+                                                        className="mt-2 w-fit"
+                                                        variant="outline"
+                                                        disabled={loading}
+                                                    >
+                                                        {loading ? 'Generating PDF...' : 'Save Report'}
+                                                    </Button>
+                                                )}
+                                            </PDFDownloadLink>
+                                    }
+                                </div>
+                            </div>
 
                         </div>
+                    </div>
                 </CardContent>
             </Card>
         </div>

@@ -3,31 +3,22 @@ import { useEffect, useState } from "react";
 import { IoTrashBinSharp } from "react-icons/io5";
 import { AiTwotoneCloseCircle } from "react-icons/ai";
 import { useCreateLostReportsMutation, useGetCategoriesQuery } from "@/lib/api";
-import { useNavigate } from "react-router";
+import { redirect, useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { useAuth } from "@clerk/clerk-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { uploadImageToCloudinary } from "@/lib/cloudinery";
 
 function LostReport() {
+    const { user } = useAuth()
 
-
-    /*const handleImageChange = (e) => {
-        if (e.target.files) {
-            setImages([...images, ...Array.from(e.target.files)])
-        }
-    }
-
-    const handleCategoryChange = (e) => {
-        const value = [...e.target.value];
-        if (!value.includes(category)) {
-            setCategory([...category, value]);
-        }
-    }*/
-
+    const { isSignedIn } = useAuth()
     const [createLostReport, { isLoading, isError, error, isSuccess }] = useCreateLostReportsMutation()
     const { data: categoriesList } = useGetCategoriesQuery();
 
 
     const navigate = useNavigate()
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [name, setName] = useState('')
     const [phoneNo, setPhoneNo] = useState('')
@@ -43,6 +34,8 @@ function LostReport() {
     const [nearestPoliceStation, setNearestPoliceStation] = useState('')
 
     const [categoryDisplay, setCategoryDisplay] = useState([])
+    const flatCategory = categoryDisplay.flat();
+
     useEffect(() => {
         if (isSuccess) {
             setName('')
@@ -75,7 +68,7 @@ function LostReport() {
     const handleNICChange = (e) => setNIC(e.target.value)
     const handleItemsChange = (e) => setItems(e.target.value)
     const handleDescriptionChange = (e) => setDescription(e.target.value)
-    const handleImageChange = (e) => {
+    const handleImageChange = async (e) => {
         if (e.target.files) {
             setImages([...images, ...Array.from(e.target.files)])
         }
@@ -109,21 +102,52 @@ function LostReport() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
         if (canSave) {
-            await createLostReport({
-                name,
-                phoneNo,
-                nic,
-                items,
-                description,
-                images,
-                category,
-                dateOfLost,
-                timeOfLost,
-                district,
-                location,
-                nearestPoliceStation
-            })
+            setIsSubmitting(true);
+            let imageUrls = [];
+            console.log(imageUrls)
+
+            if (images && images.length > 0) {
+                try {
+                    for (const image of images) {
+                        console.log("Uploading file:", image.name, image.size);
+                        const url = await uploadImageToCloudinary(image);
+                        console.log("Image uploaded successfully:", url);
+                        imageUrls.push(url);
+                    }
+                    console.log("Upload successful, URL:", imageUrls);
+                } catch (uploadError) {
+                    console.error("Failed to upload image:", uploadError);
+                    toast.error("Failed to upload  image. Please try again.", { position: "bottom-right" });
+                    setIsSubmitting(false);
+                    return;
+                }
+            }
+            try {
+                await createLostReport({
+                    name,
+                    phoneNo,
+                    nic,
+                    items,
+                    description,
+                    image: imageUrls,
+                    category: flatCategory,
+                    dateOfLost,
+                    timeOfLost,
+                    district,
+                    location,
+                    nearestPoliceStation,
+                    createBy: user?.id
+                })
+            } catch (error) {
+                toast.error("Failed to create lost report. Please try again.", { position: "bottom-right" });
+                console.error("Error creating lost report:", error);
+            }
+            finally {
+                setIsSubmitting(false);
+            }
+
         }
     }
     const handleCategoryChange = (e) => {
@@ -133,9 +157,91 @@ function LostReport() {
         }
     }
 
+
+    if (!isSignedIn) {
+        navigate('/signin')
+    }
+    if (isLoading) {
+        return (
+            <section className="py-12 bg-blue-50 flex justify-center">
+                <form action="" method="POST" onSubmit={handleSubmit} className="bg-slate-100 rounded-xl px-4 py-8 max-w-[800px] shadow-2xl">
+                    <h2 className="text-2xl font-bold text-blue-950 pb-4">Lost Item Report</h2>
+
+                    <Skeleton />
+                    <Skeleton />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2">
+                        <div className="mr-4 ms:mr-0">
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                        <div>
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                    </div>
+
+
+                    <Skeleton />
+                    <Skeleton />
+
+                    <label className="font-semibold" htmlFor="description">Description</label>
+                    <Skeleton />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2">
+                        <div className="mr-4 sm:mr-0">
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                        <div>
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2">
+                        <div className="mr-4 ms:mr-0">
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                        <div>
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                    </div>
+
+                    <Skeleton />
+                    <Skeleton />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2">
+                        <div className="mr-4 ms:mr-0">
+                            <Skeleton />
+                        </div>
+                        <div>
+                            <Skeleton />
+                            <Skeleton />
+                        </div>
+                    </div>
+                    <div className="flex justify-center py-6">
+                        <Skeleton />
+                    </div>
+
+                </form>
+
+            </section>
+        );
+    }
+
     return (
-        <section className="py-12 bg-blue-50 flex justify-center">
-            <form action="" method="POST" onSubmit={handleSubmit} className="bg-slate-100 rounded-xl px-4 py-8 max-w-[800px] shadow-2xl">
+        <section className="py-16 px-4 flex justify-center bg-gradient-to-b from-blue-100 via-white to-blue-50">
+            <form
+                action=""
+                method="POST"
+                onSubmit={handleSubmit}
+                className="bg-white/60 backdrop-blur-md border border-blue-200 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-xl px-6 py-10 max-w-[800px] w-full drop-shadow-xl transition-all duration-300"
+            >
+
                 <h2 className="text-2xl font-bold text-blue-950 pb-4">Lost Item Report</h2>
 
                 <label className="font-semibold" htmlFor="name">Name</label>
@@ -211,7 +317,11 @@ function LostReport() {
                         <div className="flex pt-0  gap-4 relative">
                             {images.map((image, index) => (
                                 <div key={index}>
-                                    <img src={URL.createObjectURL(image)} alt="" className="w-auto h-16 object-cover rounded-md" />
+                                    <img
+                                        src={typeof image === "string" ? image : URL.createObjectURL(image)}
+                                        alt=""
+                                        className="w-auto h-16 object-cover rounded-md"
+                                    />
                                     <button
                                         onClick={() => setImages(images.filter((_, i) => i !== index))}
                                         className="absolute right-68 bottom-0 mb-1 z-50 bg-rose-600 opacity-70 p-1 rounded-full"
@@ -358,7 +468,7 @@ function LostReport() {
                     </div>
                 </div>
                 <div className="flex justify-center py-6">
-                    <Button type="submit" disabled={!canSave} >Submit Lost Report</Button>
+                    <Button type="submit" disabled={!canSave || isSubmitting} >Submit Lost Report</Button>
                 </div>
 
             </form>

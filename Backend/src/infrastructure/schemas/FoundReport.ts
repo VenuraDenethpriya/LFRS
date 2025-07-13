@@ -34,7 +34,7 @@ const FoundReportSchema = new mongoose.Schema({
         required: true
     },
     image: {
-        type: [String]
+        type: [String],
     },
     dateOfFound: {
         type: Date,

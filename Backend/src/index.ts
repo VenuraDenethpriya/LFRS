@@ -7,6 +7,7 @@ import { categoryRounter } from "./api/category";
 import globalErrorHandlingMiddleware from "./api/middleware/global-error-handling-middleware";
 import cors from 'cors';
 import { clerkMiddleware } from "@clerk/express";
+import { dashboardRouter } from "./api/dashboard";
 
 const app = express();
 const publishableKey = process.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -16,7 +17,10 @@ app.use(express.json());
 app.use(clerkMiddleware({
    publishableKey,secretKey
 }))
-app.use(cors({ origin:`http://localhost:5173`}));
+app.use(cors({ 
+    origin:`http://localhost:5173`,
+    credentials: true,
+}));
 //Pre-middleware
 app.use((req, res, next) => {
     console.log("Request received")
@@ -27,6 +31,7 @@ app.use((req, res, next) => {
 app.use('/api/lostitem', lostRouter)
 app.use('/api/founditem', foundRouter)
 app.use('/api/category', categoryRounter)
+app.use('/api/dashboard', dashboardRouter);
 app.use(globalErrorHandlingMiddleware as any)
 
 connectDB();

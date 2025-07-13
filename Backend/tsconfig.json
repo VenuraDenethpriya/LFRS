@@ -5,9 +5,11 @@
       "strict": true,
       "lib": ["esnext"],
       "esModuleInterop": true,
-      "skipLibCheck": true
+      "skipLibCheck": true,
+      "typeRoots": ["./node_modules/@types", "./src/types"]
     },
     "ts-node": {
       "files": true
-    }
+    },
+    "include": ["src", "src/types"] 
   }

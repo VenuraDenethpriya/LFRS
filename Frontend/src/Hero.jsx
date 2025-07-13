@@ -3,31 +3,40 @@ import { Button } from "./components/ui/button";
 
 function Hero() {
     return (
-        <section className="relative min-h-[600px] flex justify-center items-center">
-            <div className="absolute inset-0 bg-[url('../src/assets/Hero/hero.webp')] bg-cover bg-center opacity-100"></div>
-            <div className="absolute inset-0 bg-blue-950 bg-opacity-50 backdrop-blur-md"></div>
+        <section className="relative min-h-[700px] flex justify-center items-center overflow-hidden">
+            {/* Background image */}
+            <div className="absolute inset-0 bg-[url('../src/assets/Hero/hero.webp')] bg-cover bg-center brightness-75 scale-105"></div>
 
-            <div className="relative text-white text-center flex flex-col justify-center items-center px-6 max-w-2xl">
-                <h1 className="text-2xl  sm:text-6xl font-bold pb-6">
-                    Find And Recover Items Easily
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-950/80 via-blue-900/70 to-black/60 backdrop-blur-sm"></div>
+
+            {/* Content */}
+            <div className="relative z-10 text-white text-center flex flex-col justify-center items-center px-6 max-w-3xl">
+                <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold leading-tight drop-shadow-lg">
+                    Find & Recover Items <span className="text-red-400">Easily</span>
                 </h1>
-                <p className="text-sm pt-4 sm:text-lg font-bold">
-                Report lost items quickly and securely with our official Lost and Found Reporting System. 
-                Help us streamline the process by submitting detailed reports online, allowing us to track, 
-                verify, and assist in recovering your belongings efficiently. Stay informed with real-time updates 
-                as we work to reunite you with what’s lost.
+                <p className="text-md sm:text-lg md:text-xl mt-6 text-gray-200 font-medium">
+                    Report lost items securely with the official Lost and Found Reporting System. Track, verify,
+                    and get real-time updates to help recover your belongings faster.
                 </p>
-                <div className="flex justify-center gap-4 py-8">
+
+                <div className="flex flex-wrap justify-center gap-6 mt-10">
                     <Link to="/lostreport">
-                    <Button variant="outline" className="border-2 text-red-700 border-red-600 bg-red-300 shadow-sm hover:bg-red-600 hover:text-white">
-                        Lost Report
-                    </Button>
+                        <Button
+                            variant="outline"
+                            className="bg-red-500/90 text-white border-none hover:bg-red-600 hover:scale-105 transition-all duration-200 px-6 py-3 text-lg font-semibold shadow-xl rounded-xl"
+                        >
+                            Report Lost Item
+                        </Button>
                     </Link>
-                    
+
                     <Link to="/foundreport">
-                    <Button variant="outline" className="border-2 text-lime-700 border-lime-700 bg-lime-200 shadow-sm hover:bg-lime-500 hover:text-white">
-                        Found Report
-                    </Button>
+                        <Button
+                            variant="outline"
+                            className="bg-lime-500/90 text-white border-none hover:bg-lime-600 hover:scale-105 transition-all duration-200 px-6 py-3 text-lg font-semibold shadow-xl rounded-xl"
+                        >
+                            Report Found Item
+                        </Button>
                     </Link>
                 </div>
             </div>
