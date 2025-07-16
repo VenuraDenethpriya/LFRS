@@ -1,80 +1,75 @@
 import { useState } from 'react';
-import { Button } from "./components/ui/button";
-import { Link, Navigate } from 'react-router';
 import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
+import { Button } from "./components/ui/button";
+import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router';
 
 function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
-    const [isVisited, setIsVisited] = useState(false)
 
-    const toggleMenu = () => {
-        setIsOpen(!isOpen);
+    const toggleMenu = () => setIsOpen(!isOpen);
+
+    const handleScrollTo = (id) => {
+        const section = document.getElementById(id);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+            setIsOpen(false); // close mobile menu after click
+        }
     };
 
-    const handleAboutScroll = () => {
-        const aboutSection = document.getElementById('aboutUs');
-        if (aboutSection) {
-            aboutSection.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-    const handleContactScroll = () => {
-        const contactSection = document.getElementById('footer');
-        if (contactSection) {
-            contactSection.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-
     return (
-        <nav className="flex bg-blue-950 text-white px-12 py-8 justify-between">
-            {/* Large Nav */}
-            <ul className="hidden sm:flex gap-8">
-                <li className="text-2xl hover:text-slate-400 " onClick={()=> setIsVisited(true)}><Link to="/">Home</Link></li>
-                <li className="pt-1 hover:text-slate-400"><Link to="/reports">Reports</Link></li>
-                <li className="pt-1 hover:text-slate-400"><a href="#aboutUs" onClick={handleAboutScroll}>About</a></li>
-                <li className="pt-1 hover:text-slate-400"><a href="#" onClick={handleContactScroll}>Contact</a></li>
-            </ul>
-
-            {/* Mobile Hamburger Menu */}
-            <div className="sm:hidden flex items-center" onClick={toggleMenu}>
-                {
-                    isOpen ? <button className="text-white">X</button> : <button className="text-white">☰</button>
-                }
+        <nav className="sticky top-0 z-50 bg-blue-950/80 backdrop-blur-md px-6 py-4 shadow-md">
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
                 
-            </div>
+                {/* Logo or Title */}
+                <Link to="/" className="text-white text-2xl font-bold tracking-wide hover:text-slate-300 transition">LFRS</Link>
 
-            {/* Dropdown Menu for Mobile  */}
-            <div
-                className={`sm:hidden ${isOpen ? 'block' : 'hidden'} absolute top-8 left-20 w-fit px-12 bg-blue-950 bg-opacity-70 backdrop-blur-md text-white z-50 rounded-md shadow-md`
-                }>
-                <ul className="flex flex-col items-center py-4">
-                    <li className="text-md hover:text-slate-300 py-2"><Link to="/">Home</Link></li>
-                    <li className="pt-1 text-sm hover:text-slate-300 py-2"><Link to="/reports">Reports</Link></li>
-                    <li className="pt-1 text-sm hover:text-slate-300 py-2"><a href="#" onClick={handleAboutScroll}>About</a></li>
-                    <li className="pt-1 text-sm hover:text-slate-300 py-2"><a href="#" onClick={handleContactScroll}>Contact</a></li>
+                {/* Desktop Menu */}
+                <ul className="hidden md:flex space-x-8 items-center text-white font-medium">
+                    <li><Link to="/" className="hover:text-slate-300 transition">Home</Link></li>
+                    <li><Link to="/reports" className="hover:text-slate-300 transition">Reports</Link></li>
+                    <li><button onClick={() => handleScrollTo('aboutUs')} className="hover:text-slate-300 transition">About</button></li>
+                    <li><button onClick={() => handleScrollTo('footer')} className="hover:text-slate-300 transition">Contact</button></li>
                 </ul>
-            </div>
 
-            <SignedIn>
-                <UserButton/>
-            </SignedIn>
-
-            <SignedOut>
-                <div className="flex gap-4">
-                <div>
-                    <Link to="/signin">
-                    <Button variant="link">Signin</Button>
-                    </Link>
-                    
+                {/* Auth Buttons */}
+                <div className="hidden md:flex items-center gap-4">
+                    <SignedIn>
+                        <UserButton afterSignOutUrl="/" />
+                    </SignedIn>
+                    <SignedOut>
+                        <Link to="/signin"><Button variant="link" className="text-white">Signin</Button></Link>
+                        <Link to="/signup"><Button variant="outline" className="w-full text-white">Signup</Button></Link>
+                    </SignedOut>
                 </div>
-                <div>
-                    <Link to="/signup">
-                    <Button variant="outline">Signup</Button>
-                    </Link>
-                    
+
+                {/* Mobile Menu Icon */}
+                <div className="md:hidden text-white" onClick={toggleMenu}>
+                    {isOpen ? <X size={26} /> : <Menu size={26} />}
                 </div>
             </div>
-            </SignedOut>
-            
+
+            {/* Mobile Dropdown Menu */}
+            {isOpen && (
+                <div className="md:hidden mt-3 rounded-xl bg-blue-900/90 shadow-lg px-6 py-4 space-y-4 text-white font-medium backdrop-blur-sm">
+                    <ul className="space-y-3">
+                        <li><Link to="/" onClick={toggleMenu} className="block hover:text-slate-300 transition">Home</Link></li>
+                        <li><Link to="/reports" onClick={toggleMenu} className="block hover:text-slate-300 transition">Reports</Link></li>
+                        <li><button onClick={() => handleScrollTo('aboutUs')} className="block w-full text-left hover:text-slate-300 transition">About</button></li>
+                        <li><button onClick={() => handleScrollTo('footer')} className="block w-full text-left hover:text-slate-300 transition">Contact</button></li>
+                    </ul>
+
+                    <div className="border-t border-slate-600 pt-4 flex flex-col gap-2">
+                        <SignedIn>
+                            <UserButton afterSignOutUrl="/" />
+                        </SignedIn>
+                        <SignedOut>
+                            <Link to="/signin"><Button variant="link" className="text-white w-full">Signin</Button></Link>
+                            <Link to="/signup"><Button variant="outline" className="w-ful">Signup</Button></Link>
+                        </SignedOut>
+                    </div>
+                </div>
+            )}
         </nav>
     );
 }

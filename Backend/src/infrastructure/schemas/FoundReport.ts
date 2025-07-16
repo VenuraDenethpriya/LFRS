@@ -34,7 +34,7 @@ const FoundReportSchema = new mongoose.Schema({
         required: true
     },
     image: {
-        type: [String]
+        type: [String],
     },
     dateOfFound: {
         type: Date,
@@ -62,7 +62,7 @@ const FoundReportSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['FOUND', 'IMFORMED', 'CLAIMED', 'REMOVED', 'NOT COLLECTED'],
+        enum: ['FOUND', 'IMFORMED', 'COLLECTED', 'REMOVED', 'NOT COLLECTED'],
         default: 'FOUND'
     },
     referanceNo: {

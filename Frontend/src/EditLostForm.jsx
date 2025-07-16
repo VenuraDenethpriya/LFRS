@@ -114,6 +114,7 @@ function EditLostForm(props) {
                                 Date
                             </Label>
                             <Input
+                                type="date"
                                 id="date"
                                 defaultValue={props.date}
                                 className="col-span-3"
