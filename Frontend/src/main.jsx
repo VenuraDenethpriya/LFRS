@@ -19,6 +19,7 @@ import EditLostForm from "./EditLostForm";
 import PoliceDashboard from "./pages/police/dashboard";
 import ReportView from "./pages/police/reportview";
 import AppRoutes from "./AppRoutes";
+import { TooltipProvider } from "./components/ui/tooltip";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 

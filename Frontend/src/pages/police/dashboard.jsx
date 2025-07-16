@@ -13,22 +13,23 @@ import { Link } from "react-router";
 function PoliceDashboard() {
     const { data, isLoading, error } = useGetDashboardDataQuery();
 
-const LostReportStatusData = [
-    { name: "LOST", value: data?.LostReportTotal, fill: "#e53e3e" },         // Strong Red
-    { name: "FOUND", value: data?.LostFoundReportTotal, fill: "#38a169" },   // Medium Green
-    { name: "IMFORMED", value: data?.InformedReportTotal, fill: "#dd6b20" }, // Orange (warning)
-    { name: "COLLECTED", value: data?.CollectedReportTotal, fill: "#4a5568" }, // Dark Slate Gray
-    { name: "REMOVED", value: data?.RemoveReportTotal, fill: "#6b46c1" },    // Purple
-    { name: "NOT COLLECTED", value: data?.NotCollectedReportTotal, fill: "#718096" }, // Grayish Blue
-]
+    // HEX values for chart fills, matching your badge colors but aiming for better visibility in charts
+    const LostReportStatusData = [
+        { name: "LOST", value: data?.LostReportTotal, fill: "#dc2626" }, // Tailwind red-600 (stronger red)
+        { name: "FOUND", value: data?.LostFoundReportTotal, fill: "#2563eb" }, // Tailwind blue-600 (stronger blue)
+        { name: "IMFORMED", value: data?.InformedReportTotal, fill: "#eab308" }, // Tailwind yellow-600 (stronger yellow)
+        { name: "COLLECTED", value: data?.CollectedReportTotal, fill: "#16a34a" }, // Tailwind green-600 (stronger green)
+        { name: "REMOVED", value: data?.RemoveReportTotal, fill: "#6b7280" }, // Tailwind gray-500/600 (a solid gray)
+        { name: "NOT COLLECTED", value: data?.NotCollectedReportTotal, fill: "#7c3aed" }, // Tailwind purple-600 (stronger purple)
+    ];
 
-const FoundReportStatusData = [
-    { name: "FOUND", value: data?.FoundReportTotal, fill: "#38a169" },        // Medium Green
-    { name: "IMFORMED", value: data?.InformedFoundReportTotal, fill: "#dd6b20" }, // Orange
-    { name: "COLLECTED", value: data?.ClaimedFoundReportTotal, fill: "#4a5568" }, // Dark Slate Gray
-    { name: "REMOVED", value: data?.RemoveFoundReportTotal, fill: "#6b46c1" },    // Purple
-    { name: "NOT COLLECTED", value: data?.NotCollectedFoundReportTotal, fill: "#718096" }, // Grayish Blue
-]
+    const FoundReportStatusData = [
+        { name: "FOUND", value: data?.FoundReportTotal, fill: "#2563eb" }, // Tailwind blue-600
+        { name: "IMFORMED", value: data?.InformedFoundReportTotal, fill: "#eab308" }, // Tailwind yellow-600
+        { name: "COLLECTED", value: data?.ClaimedFoundReportTotal, fill: "#16a34a" }, // Tailwind green-600
+        { name: "REMOVED", value: data?.RemoveFoundReportTotal, fill: "#6b7280" }, // Tailwind gray-500/600
+        { name: "NOT COLLECTED", value: data?.NotCollectedFoundReportTotal, fill: "#7c3aed" }, // Tailwind purple-600
+    ];
 
 
     const LostReportchartData = data?.TotalLostReportForLast3Months?.map(item => ({
@@ -158,12 +159,12 @@ const FoundReportStatusData = [
             >
                 <div className="text-center md:text-left mb-4 md:mb-0">
                     <div className="flex items-center gap-2">
-                        <ChartNoAxesCombined className="flex"/>
+                        <ChartNoAxesCombined className="flex" />
                         <h2 className="text-3xl font-extrabold text-blue-900">
                             Police Dashboard Overview
                         </h2>
                     </div>
-                    
+
 
                     <p className="text-sm text-blue-700 mt-1">
                         Monitor and manage lost and found reports in real time.

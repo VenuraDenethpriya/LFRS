@@ -19,12 +19,13 @@ function DashboardPieChart({ description, ReportStatusData }) {
                 <CardContent className="h-full">
                     <ChartContainer
                         config={{
-                            removed: { label: "Removed", color: "#6b46c1" },          // Purple
-                            notCollected: { label: "Not Collected", color: "#718096" }, // Grayish Blue
-                            informed: { label: "Informed", color: "#dd6b20" },        // Orange (warning)
-                            found: { label: "Found", color: "#38a169" },              // Medium Green
-                            lost: { label: "Lost", color: "#e53e3e" },                // Strong Red
-                            collected: { label: "Collected", color: "#4a5568" },      // Dark Slate Gray
+                            removed: { label: "Removed", color: "#6b7280" },          // Tailwind gray-500/600
+                            notCollected: { label: "Not Collected", color: "#7c3aed" }, // Tailwind purple-600
+                            informed: { label: "Informed", color: "#eab308" },        // Tailwind yellow-600
+                            found: { label: "Found", color: "#2563eb" },              // Tailwind blue-600
+                            lost: { label: "Lost", color: "#dc2626" },                // Tailwind red-600
+                            collected: { label: "Collected", color: "#16a34a" },      // Tailwind green-600
+                        
                         }}
                         className="h-[240px] mt-2"
                     >
@@ -32,7 +33,7 @@ function DashboardPieChart({ description, ReportStatusData }) {
                             <PieChart>
                                 <Pie
                                     data={ReportStatusData}
-                                    cx="80%"
+                                    cx="60%"
                                     cy="50%"
                                     labelLine={false}
                                     label={({ name, percent }) =>

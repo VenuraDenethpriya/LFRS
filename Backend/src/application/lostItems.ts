@@ -37,6 +37,7 @@ export const geTLostReport = async (req: Request, res: Response, next: NextFunct
             policeStation,
             district,
             date,
+            status,
             limit = '10',
             offset = '0',
         } = req.query;
@@ -81,6 +82,7 @@ export const geTLostReport = async (req: Request, res: Response, next: NextFunct
         if (date && typeof date === 'string') {
             query.dateOfLost = new Date(date);
         }
+        if (status) query.status = { $regex: status, $options: 'i' };
         
         console.log("Final Query:", query);
 
@@ -89,7 +91,7 @@ export const geTLostReport = async (req: Request, res: Response, next: NextFunct
             .limit(parseInt(limit as string))
             .skip(parseInt(offset as string))
             .populate('category')
-            .sort({ createdAt: -1 });
+            .sort({ updatedAt: -1 });
 
         console.log("Reports:", reports);
         return res.status(200).json({

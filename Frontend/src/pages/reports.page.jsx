@@ -30,6 +30,7 @@ export default function ItemReports() {
     const [policeStation, setPoliceStation] = useState('')
     const [district, setDistrict] = useState('')
     const [date, setDate] = useState('')
+    const [status, setStatus] = useState('')
     const [limit, setLimit] = useState(10)
     const [offset, setOffset] = useState(0)
 
@@ -41,7 +42,8 @@ export default function ItemReports() {
         policeStation ? setPoliceStation(policeStation) : setPoliceStation('')
         district ? setDistrict(district) : setDistrict('')
         date ? setDate(date) : setDate('')
-    }, [referance, category, location, policeStation, district, date])
+        status ? setStatus(status) : setStatus('')
+    }, [referance, category, location, policeStation, district, date, status])
 
     const navigate = useNavigate()
     const { isSignedIn } = useAuth()
@@ -53,6 +55,7 @@ export default function ItemReports() {
         policeStation,
         district,
         date,
+        status,
         limit,
         offset,
     };
@@ -92,6 +95,7 @@ export default function ItemReports() {
         setPoliceStation('');
         setDistrict('');
         setDate('');
+        setStatus('');
     };
 
     if (isLostLoading || isFoundLoading) {
@@ -291,6 +295,21 @@ export default function ItemReports() {
                                     value={date}
                                 />
 
+                                {/* Status Select */}
+                                <Select onValueChange={setStatus} value={status}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Status" /> {/* Updated placeholder text */}
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {/* REMOVED: <SelectItem value="">Status</SelectItem> */}
+                                        <SelectItem value="LOST">LOST</SelectItem>
+                                        <SelectItem value="FOUND">FOUND</SelectItem>
+                                        <SelectItem value="IMFORMED">IMFORMED</SelectItem>
+                                        <SelectItem value="COLLECTED">COLLECTED</SelectItem>
+                                        <SelectItem value="REMOVED">REMOVED</SelectItem>
+                                        <SelectItem value="NOT COLLECTED">NOT COLLECTED</SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </div>
                         </div>) : null
                     }
@@ -335,6 +354,12 @@ export default function ItemReports() {
                                         referanceNo={report.referanceNo}
                                         phoneNo={report.phoneNo}
                                         type="lost"
+                                        createdAt={new Date(report.createdAt).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric'
+                                        })}
+                                        district={report.district}
                                     />
                                 ))}
                                 <div className="w-full flex justify-end mt-6">
@@ -382,6 +407,11 @@ export default function ItemReports() {
                                         })}
                                         location={report.location}
                                         station={report.nearestPoliceStation}
+                                        createdAt={new Date(report.createdAt).toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric'
+                                        })}
                                         updatedAt={new Date(report.updatedAt).toLocaleDateString('en-US', {
                                             year: 'numeric',
                                             month: 'long',
@@ -390,6 +420,7 @@ export default function ItemReports() {
                                         status={report.status}
                                         referanceNo={report.referanceNo}
                                         phoneNo={report.phoneNo}
+                                        district={report.district}
                                         type="found"
                                     />
                                 ))}

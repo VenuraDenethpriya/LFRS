@@ -9,6 +9,9 @@ import { Separator } from "@/components/ui/separator"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useGetFoundReportByIdQuery, useGetLostReportByIdQuery } from "@/lib/api"
 import { useParams } from "react-router"
+import StatusChangeMenu from "@/components/StatusChangeMenu"
+import { PDFDownloadLink } from "@react-pdf/renderer"
+import ReportTemplate from "@/components/ReportTemplate"
 
 
 
@@ -41,18 +44,7 @@ function ReportView() {
         })
     }
 
-    const getStatusColor = (status) => {
-        switch (status.toLowerCase()) {
-            case "lost":
-                return "destructive"
-            case "found":
-                return "default"
-            case "resolved":
-                return "secondary"
-            default:
-                return "outline"
-        }
-    }
+
 
     if (isLoading) {
         return (
@@ -79,7 +71,7 @@ function ReportView() {
 
     if (isError) {
         return (
-           <div className="container mx-auto py-6 px-10">
+            <div className="container mx-auto py-6 px-10">
                 <Alert variant="destructive">
                     <AlertDescription>Error loading report: {error?.message || "Something went wrong"}</AlertDescription>
                 </Alert>
@@ -89,7 +81,7 @@ function ReportView() {
 
     if (!report) {
         return (
-           <div className="container mx-auto py-6 px-10">
+            <div className="container mx-auto py-6 px-10">
                 <Alert>
                     <AlertDescription>No report found with the provided ID.</AlertDescription>
                 </Alert>
@@ -107,16 +99,30 @@ function ReportView() {
                             <h1 className="text-3xl font-bold text-gray-900">{type === "lost" ? "Lost Item Report" : "Found Item Report"}</h1>
                             <p className="text-gray-600 mt-1">Reference: {report?.referanceNo}</p>
                         </div>
-                        <Badge variant={getStatusColor(report.status)} className="w-fit rounded-full py-2 px-4">
-                            {report?.status}
-                        </Badge>
+                        <StatusChangeMenu
+                            status={report?.status}
+                            id={report?._id}
+                            type={type}
+                        />
+
                     </div>
                     <div>
                         {/* Action Buttons */}
                         <div className="flex flex-wrap gap-4 pt-6 border-t">
-                            <Button>Change Status</Button>
-                            <Button variant="outline">Download</Button>
-                            {/* <Button variant="outline">Share Report</Button> */}
+                            <PDFDownloadLink
+                                document={<ReportTemplate data={report} />}
+                                fileName={type === "lost" ? `Lost-Report-${report?.referanceNo}.pdf` : `Found-Report-${report?.referanceNo}.pdf`}
+                            >
+                                {({ blob, url, loading, error }) => (
+                                    <Button
+                                        className=" mt-2"
+                                        variant="outline"
+                                        disabled={loading}
+                                    >
+                                        {loading ? 'Generating...' : 'Save Report'}
+                                    </Button>
+                                )}
+                            </PDFDownloadLink>
                         </div>
                     </div>
 
@@ -145,7 +151,7 @@ function ReportView() {
                                     <label className="block text-sm text-gray-500 mb-1">Categories</label>
                                     <div className="flex flex-wrap gap-2">
                                         {report.category.map((cat, index) => (
-                                            <Badge key={index} className="bg-sky-100 text-sky-800 border border-sky-200">
+                                            <Badge key={index} className="px-3 py-1 rounded-full bg-orange-100 text-orange-800 text-xs font-medium shadow-sm">
                                                 {cat}
                                             </Badge>
                                         ))}

@@ -24,6 +24,7 @@ export const getFoundReport = async (req: Request, res: Response, next: NextFunc
             policeStation,
             district,
             date,
+            status,
             limit = '10',
             offset = '0',
         } = req.query;
@@ -69,6 +70,7 @@ export const getFoundReport = async (req: Request, res: Response, next: NextFunc
         if (date && typeof date === 'string') {
             query.dateOfFound = new Date(date);
         }
+        if (status) query.status = { $regex: status, $options: 'i' };
         console.log("Final Query:", query);
 
         const totalCount = await FoundReport.countDocuments(query);
