@@ -4,6 +4,7 @@ import { buildQueryString } from "./features/queryString";
 // Define a service using a base URL and expected endpoints
 export const reportApi = createApi({
   reducerPath: "reportApi",
+
   baseQuery: fetchBaseQuery({ 
     baseUrl: "http://localhost:8000/api/",
     prepareHeaders: async (headers) => {
@@ -14,6 +15,7 @@ export const reportApi = createApi({
       return headers;
     },
   }),
+
   endpoints: (builder) => ({
     // GET request for lostitem endpoint |  query = GET
     getLostReports: builder.query({
