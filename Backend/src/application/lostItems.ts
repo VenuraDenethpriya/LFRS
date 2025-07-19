@@ -2,31 +2,40 @@ import { Response, Request, NextFunction } from "express";
 import LostReport from "../infrastructure/schemas/LostReport";
 import NotFoundError from "../domain/errors/not-found-error";
 import { getAuth } from "@clerk/express";
-import { buildLostReportQuery } from "../utils";
+import { buildLostReportQuery, sendConfirmationEmail, sendSMS, sendStatusUpdateEmail } from "../utils";
 
 
 export const createLostReport = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        //const createdBy = getAuth(req).userId;
-        //const report = await LostReport.create({createdBy, ...req.body})
-        const files = req.files as Express.Multer.File[] | undefined;
+  try {
+    const files = req.files as Express.Multer.File[] | undefined;
+    const imageUrls = files?.map((file) => file.path) || [];
 
-        const imageUrls = files?.map((file) => file.path) || [];
+    const report = await LostReport.create({
+      ...req.body,
+      images: imageUrls,
+    });
 
-        const report = await LostReport.create({
-            ...req.body,
-            images: imageUrls,
-        });
-        if (report) {
-            return res.status(201).json({ message: "You have successfully created a report" })
-        }
+    if (report) {
+      // Send confirmation email if email exists
+      if (req.body.email) {
+        await sendConfirmationEmail(report.email, report, 'LOST');
+      }
 
-        return res.status(200).json({ message: 'Something went wrong try again' })
+      // Send SMS if phoneNo exists
+      if (req.body.phoneNo) {
+        const message = `Hello ${report.name}, your lost item report (Ref: ${report.referanceNo}) has been created successfully. Thank you!`;
+        await sendSMS(req.body.phoneNo, message);
+      }
+
+      return res.status(201).json({ message: "You have successfully created a report" });
     }
-    catch (error) {
-        next(error)
-    }
+
+    return res.status(200).json({ message: 'Something went wrong try again' });
+  } catch (error) {
+    next(error);
+  }
 }
+
 
 export const geTLostReport = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -83,7 +92,7 @@ export const geTLostReport = async (req: Request, res: Response, next: NextFunct
             query.dateOfLost = new Date(date);
         }
         if (status) query.status = { $regex: status, $options: 'i' };
-        
+
         console.log("Final Query:", query);
 
         const totalCount = await LostReport.countDocuments(query);
@@ -132,18 +141,57 @@ export const deleteLostReport = async (req: Request, res: Response, next: NextFu
     }
 }
 
+// export const UpdateReport = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const id = req.params.id;
+//         const lostReport = await LostReport.findByIdAndUpdate(id, req.body)
+//         if (!lostReport) {
+//             throw new NotFoundError("Lost report not found")
+//         }
+//         return res.status(200).json(lostReport).send("You have successfully updated the report status")
+//     } catch (error) {
+//         next(error)
+//     }
+// }
 export const UpdateReport = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const id = req.params.id;
-        const lostReport = await LostReport.findByIdAndUpdate(id, req.body)
-        if (!lostReport) {
-            throw new NotFoundError("Lost report not found")
-        }
-        return res.status(200).json(lostReport).send("You have successfully updated the report status")
-    } catch (error) {
-        next(error)
+  try {
+    const id = req.params.id;
+    const updateData = req.body;
+
+    // Find existing report first
+    const existingReport = await LostReport.findById(id);
+    if (!existingReport) throw new NotFoundError("Lost report not found");
+
+    const previousStatus = existingReport.status;
+    const updatedReport = await LostReport.findByIdAndUpdate(id, updateData, { new: true });
+
+    // Only proceed if status has changed
+    if (
+      updatedReport &&
+      previousStatus !== updatedReport.status
+    ) {
+      // Send email if email exists
+      if (updatedReport.email) {
+        await sendStatusUpdateEmail(
+          updatedReport.email,
+          updatedReport.name,
+          updatedReport.referanceNo,
+          updatedReport.status
+        );
+      }
+
+      // Send SMS if phone number exists
+      if (updatedReport.phoneNo) {
+        const smsMessage = `Hi ${updatedReport.name}, your lost report (Ref: ${updatedReport.referanceNo}) status has been updated to '${updatedReport.status}'.`;
+        await sendSMS(updatedReport.phoneNo, smsMessage);
+      }
     }
-}
+
+    return res.status(200).json(updatedReport);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getLostProductByCategory = async (req: Request, res: Response, next: NextFunction) => {
 
