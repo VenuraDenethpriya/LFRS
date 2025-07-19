@@ -1,114 +1,137 @@
 import { Request, Response, NextFunction } from "express";
 import FoundReport from "../infrastructure/schemas/FoundReport";
 import NotFoundError from "../domain/errors/not-found-error";
-import { getAuth } from "@clerk/express";
+import { clerkClient, getAuth } from "@clerk/express";
 import { sendConfirmationEmail, sendSMS, sendStatusUpdateEmail } from "../utils";
 
 export const createFoundReport = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const foundReport = await FoundReport.create(req.body)
-        if (foundReport) {
-            if (req.body.email) {
-                await sendConfirmationEmail(foundReport.email, foundReport, 'FOUND');
-            }
-            // Send SMS if phoneNo exists
-          if (req.body.phoneNo) {
-            const message = `Hello ${foundReport.name}, your found item report (Ref: ${foundReport.referanceNo}) has been created successfully. Thank you!`;
-            await sendSMS(req.body.phoneNo, message);
-          }
-            return res.status(201).json(foundReport).send();
-        }
-        return res.status(200).send("Something went wrong");
-    } catch (error) {
-        next(error);
+  try {
+    const foundReport = await FoundReport.create(req.body)
+    if (foundReport) {
+      if (req.body.email) {
+        await sendConfirmationEmail(foundReport.email, foundReport, 'FOUND');
+      }
+      // Send SMS if phoneNo exists
+      if (req.body.phoneNo) {
+        const message = `Hello ${foundReport.name}, your found item report (Ref: ${foundReport.referanceNo}) has been created successfully. Thank you!`;
+        await sendSMS(req.body.phoneNo, message);
+      }
+      return res.status(201).json(foundReport).send();
     }
+    return res.status(200).send("Something went wrong");
+  } catch (error) {
+    next(error);
+  }
 }
 
 export const getFoundReport = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const {
-            referance,
-            category,
-            location,
-            policeStation,
-            district,
-            date,
-            status,
-            limit = '10',
-            offset = '0',
-        } = req.query;
+  try {
+    const {
+      referance,
+      category,
+      location,
+      policeStation,
+      district,
+      date,
+      status,
+      limit = '10',
+      offset = '0',
+    } = req.query;
 
-        const query: any = {};
+    const query: any = {};
 
-        if (referance) query.referanceNo = { $regex: referance, $options: 'i' };
-        if (category) query.category = { $in: [category] };
-        if (location) query.location = { $regex: location, $options: 'i' };
-        if (policeStation) query.nearestPoliceStation = { $regex: policeStation, $options: 'i' };
-        if (district) query.district = { $regex: district, $options: 'i' };
-
-        // --- AUTHENTICATION AND ROLE-BASED ACCESS LOGIC ---
-        // const { userId, sessionClaims } = getAuth(req);
-        // const role = sessionClaims?.metadata?.role ?? "public"; // Default to "public" if no role metadata
-
-        // console.log("------------------- Backend Debugging Start -------------------");
-        // console.log("Incoming Query Params:", req.query);
-        // console.log("Authenticated User ID:", userId); // Log the actual userId from Clerk
-        // console.log("User Role (from Clerk claims):", role);
-
-
-        // if (role !== 'admin') {
-        //     // If the user is NOT an admin, they can ONLY see their own reports.
-        //     // This also handles unauthenticated users (userId will be null).
-        //     // A non-existent userId will result in 0 matches, which is desired for unauthenticated.
-        //     if (userId) { // Ensure there's an actual userId to filter by
-        //         query.createBy = userId;
-        //         console.log("Applying non-admin user filter: query.createBy =", userId);
-        //     } else {
-        //         // If not an admin AND not authenticated, return no data (or handle differently)
-        //         console.log("Not an admin and not authenticated. Returning no data.");
-        //         return res.status(200).json({ totalCount: 0, data: [] });
-        //     }
-        // } else {
-        //     // If role IS 'admin', no 'createBy' filter is applied. Admins see all.
-        //     console.log("Admin user detected. No 'createBy' filter applied.");
-        // }
-
-        // console.log("Final Mongoose Query Object:", JSON.stringify(query, null, 2));
-        // console.log("Limit:", limit, "Offset:", offset);
-
-        if (date && typeof date === 'string') {
-            query.dateOfFound = new Date(date);
-        }
-        if (status) query.status = { $regex: status, $options: 'i' };
-        console.log("Final Query:", query);
-
-        const totalCount = await FoundReport.countDocuments(query);
-        const reports = await FoundReport.find(query)
-            .limit(parseInt(limit as string))
-            .skip(parseInt(offset as string))
-            .populate('category')
-            .sort({ createdAt: -1 });
-        return res.status(200).json({
-            totalCount,
-            data: reports,
-        }
-        );
-    } catch (error) {
-        next(error);
+    interface SessionClaims {
+      metadata?: {
+        role?: string;
+      };
     }
+
+
+    const auth = getAuth(req);
+    console.log("Full Clerk session claims received:", auth.sessionClaims);
+
+    interface SessionClaims {
+      metadata?: {
+        role?: string;
+      };
+      // Add other potential top-level claims you see in your logs if needed
+      azp?: string;
+      exp?: number;
+      fva?: number[];
+      iat?: number;
+      iss?: string;
+      nbf?: number;
+      sid?: string;
+      sub?: string;
+    }
+    
+    const sessionClaims = auth.sessionClaims as SessionClaims;
+    const { userId } = getAuth(req);
+    console.log("Clerk User ID:", userId);
+    console.log("Clerk Session Claims Metadata:", sessionClaims?.metadata);
+    console.log("Clerk User Role:", sessionClaims?.metadata?.role);
+    console.log("Full Clerk session claims:", auth.sessionClaims);
+
+    if (!userId) {
+      // If no userId, the user is not authenticated.
+      // Depending on your requirements, you might return an empty array,
+      // or explicitly deny access. Here, we deny access.
+      console.log("Unauthorized access: No user ID found.");
+      return res.status(401).json({ message: "Unauthorized: User not authenticated." });
+    }
+
+    if (sessionClaims?.metadata?.role !== "admin") {
+      // If the user is not an admin, they should only see reports they created.
+      // Ensure your FoundReport model has a 'createdBy' field storing the Clerk userId.
+      query.createdBy = userId;
+      console.log(`User ${userId} (not admin) is requesting reports. Filtering by createdBy.`);
+    } else {
+      // If the user is an admin, no 'createdBy' filter is applied,
+      // allowing them to see all reports.
+      console.log(`Admin user ${userId} is requesting all reports.`);
+    }
+
+
+    if (referance) query.referanceNo = { $regex: referance, $options: 'i' };
+    if (category) query.category = { $in: [category] };
+    if (location) query.location = { $regex: location, $options: 'i' };
+    if (policeStation) query.nearestPoliceStation = { $regex: policeStation, $options: 'i' };
+    if (district) query.district = { $regex: district, $options: 'i' };
+
+
+    if (date && typeof date === 'string') {
+      query.dateOfFound = new Date(date);
+    }
+    if (status) query.status = { $regex: status, $options: 'i' };
+    console.log("Final Query:", query);
+
+    const totalCount = await FoundReport.countDocuments(query);
+    const reports = await FoundReport.find(query)
+      .limit(parseInt(limit as string))
+      .skip(parseInt(offset as string))
+      .populate('category')
+      .sort({ createdAt: -1 });
+    return res.status(200).json({
+      totalCount,
+      data: reports,
+    }
+    );
+  } catch (error) {
+    next(error);
+  }
 }
 
 export const getFoundReportById = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const id = req.params.id
-        const foundReport = await FoundReport.findById(id).populate('category')
-        if (!foundReport) {
-            throw new NotFoundError("Could not find FoundReport")
-        }
-        return res.status(200).json(foundReport).send();
-    } catch (error) {
-        next(error);
+  try {
+    const id = req.params.id
+    const foundReport = await FoundReport.findById(id).populate('category')
+    if (!foundReport) {
+      throw new NotFoundError("Could not find FoundReport")
     }
+    return res.status(200).json(foundReport).send();
+  } catch (error) {
+    next(error);
+  }
 }
 
 
@@ -156,14 +179,14 @@ export const updateFoundReport = async (req: Request, res: Response, next: NextF
 
 
 export const deleteFoundReport = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const id = req.params.id
-        const foundReport = await FoundReport.findByIdAndDelete(id)
-        if (!foundReport) {
-            throw new NotFoundError("Could not find FoundReport")
-        }
-        return res.status(200).send("You have successfully deleted the report");
-    } catch (error) {
-        next(error)
+  try {
+    const id = req.params.id
+    const foundReport = await FoundReport.findByIdAndDelete(id)
+    if (!foundReport) {
+      throw new NotFoundError("Could not find FoundReport")
     }
+    return res.status(200).send("You have successfully deleted the report");
+  } catch (error) {
+    next(error)
+  }
 }

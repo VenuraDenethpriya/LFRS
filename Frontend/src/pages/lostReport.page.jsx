@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { uploadImageToCloudinary } from "@/lib/cloudinery";
+import { SelectItem } from "@/components/ui/select";
 
 function LostReport() {
 
@@ -281,7 +282,7 @@ function LostReport() {
                 <input
                     type="text"
                     id="name"
-                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                     placeholder="Enter your name"
                     required
                     value={name}
@@ -294,7 +295,7 @@ function LostReport() {
                         <input
                             type="tel"
                             id="phoneNo"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                             placeholder="Enter your phone number"
                             required
                             value={phoneNo}
@@ -305,7 +306,7 @@ function LostReport() {
                         <label className="font-semibold" htmlFor="nic">NIC</label><br />
                         <input
                             type="text"
-                            id="nic" className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                            id="nic" className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                             placeholder="Enter your NIC number"
                             required
                             value={nic}
@@ -318,7 +319,7 @@ function LostReport() {
                     <label className="font-semibold" htmlFor="nic">E-mail</label><br />
                     <input
                         type="text"
-                        id="email" className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                        id="email" className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                         placeholder="Enter your E-mail"
                         required
                         value={email}
@@ -330,7 +331,7 @@ function LostReport() {
                 <label className="font-semibold" htmlFor="items">Lost Items</label>
                 <textarea
                     id="items"
-                    className="w-full h-40 px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                    className="w-full h-40 px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                     placeholder="Enter the lost items"
                     required
                     value={items}
@@ -341,7 +342,7 @@ function LostReport() {
                 <label className="font-semibold" htmlFor="description">Description</label>
                 <textarea
                     id="description"
-                    className="w-full h-40 px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                    className="w-full h-40 px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                     placeholder="Enter a detailed description"
                     value={description}
                     onChange={handleDescriptionChange}
@@ -354,7 +355,7 @@ function LostReport() {
                         <input
                             type="file"
                             id="image"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                             multiple
                             accept=".jpg,.jpeg,.png"
                             onChange={handleImageChange}
@@ -382,7 +383,7 @@ function LostReport() {
                         <select
                             name="category"
                             id="category"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline focus:outline-blue-600"
                             value={category}
                             onChange={(e) => {
                                 handleCategoryChange(e)
@@ -425,7 +426,7 @@ function LostReport() {
                                 <input
                                     type="text"
                                     id="Licence"
-                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600 "
+                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600 "
                                     placeholder="Enter your license number"
                                     required
                                     value={licenseNo}
@@ -441,7 +442,7 @@ function LostReport() {
                                 <input
                                     type="text"
                                     id="IMEI"
-                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600 "
+                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600 "
                                     placeholder="Enter phone IMEI no"
                                     required
                                     value={imeiNo}
@@ -457,7 +458,7 @@ function LostReport() {
                                 <input
                                     type="text"
                                     id="Serial"
-                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                                     placeholder="Enter laptop serial no"
                                     required
                                     value={serialNo}
@@ -473,7 +474,7 @@ function LostReport() {
                                 <input
                                     type="text"
                                     id="passport"
-                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                                     placeholder="Enter passport no"
                                     required
                                     value={passportNo}
@@ -492,7 +493,7 @@ function LostReport() {
                         <input
                             type="date"
                             id="dateOfLost"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                             required
                             value={dateOfLost}
                             onChange={handleDateOfLostChange}
@@ -504,7 +505,7 @@ function LostReport() {
                         <input
                             type="time"
                             id="timeOfLost"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                             required
                             value={timeOfLost}
                             onChange={handleTimeOfLostChange}
@@ -516,7 +517,7 @@ function LostReport() {
                 <input
                     type="text"
                     id="location"
-                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline focus:outline-blue-600"
+                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline focus:outline-blue-600"
                     placeholder="Enter the location of the lost item"
                     required
                     value={location}
@@ -529,7 +530,7 @@ function LostReport() {
                         <select
                             name="distric"
                             id="distric"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline focus:outline-blue-600"
                             value={district}
                             onChange={handleDistricChange}
                         >
@@ -552,7 +553,7 @@ function LostReport() {
                         <select
                             name="nearestPoliceStation"
                             id="nearestPoliceStation"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline focus:outline-blue-600"
                             value={nearestPoliceStation}
                             onChange={handleNearestPoliceStationChange}
                         >
@@ -573,6 +574,8 @@ function LostReport() {
                             <option value="Eravur">Eravur Police Station</option>
                             <option value="Galagedara">Galagedara Police Station</option>
                             <option value="Galle">Galle Police Station</option>
+                           
+
 
                         </select>
                     </div>
