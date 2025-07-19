@@ -23,6 +23,7 @@ function LostReport() {
     const [name, setName] = useState('')
     const [phoneNo, setPhoneNo] = useState('')
     const [nic, setNIC] = useState('')
+    const [email, setEmail] = useState('')
     const [items, setItems] = useState('')
     const [description, setDescription] = useState('')
     const [images, setImages] = useState([]);
@@ -41,6 +42,7 @@ function LostReport() {
             setName('')
             setPhoneNo('')
             setNIC('')
+            setEmail('')
             setItems('')
             setDescription('')
             setImages([])
@@ -66,6 +68,7 @@ function LostReport() {
     const handleNameChange = (e) => setName(e.target.value)
     const handlePhoneNoChange = (e) => setPhoneNo(e.target.value)
     const handleNICChange = (e) => setNIC(e.target.value)
+    const handleEmailChange = (e) => setEmail(e.target.value)
     const handleItemsChange = (e) => setItems(e.target.value)
     const handleDescriptionChange = (e) => setDescription(e.target.value)
     const handleImageChange = async (e) => {
@@ -89,6 +92,7 @@ function LostReport() {
     const canSave = [name,
         phoneNo,
         nic,
+        email,
         items,
         description,
         images,
@@ -129,6 +133,7 @@ function LostReport() {
                     name,
                     phoneNo,
                     nic,
+                    email,
                     items,
                     description,
                     image: imageUrls,
@@ -279,6 +284,18 @@ function LostReport() {
                             onChange={handleNICChange}
                         />
                     </div>
+                </div>
+
+                <div>
+                    <label className="font-semibold" htmlFor="nic">E-mail</label><br />
+                    <input
+                        type="text"
+                        id="email" className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                        placeholder="Enter your E-mail"
+                        required
+                        value={email}
+                        onChange={handleEmailChange}
+                    />
                 </div>
 
 

@@ -1,3 +1,4 @@
+import e from "express";
 import mongoose from "mongoose";
 
 const generateReferenceNo = () => {
@@ -17,6 +18,10 @@ const FoundReportSchema = new mongoose.Schema({
         required: true
     },
     nic: {
+        type: String,
+        required: true
+    },
+    email: {
         type: String,
         required: true
     },

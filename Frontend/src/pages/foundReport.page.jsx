@@ -24,6 +24,7 @@ function FoundReport() {
     const [name, setName] = useState('')
     const [phoneNo, setPhoneNo] = useState('')
     const [nic, setNIC] = useState('')
+    const [email, setEmail] = useState('')
     const [items, setItems] = useState('')
     const [description, setDescription] = useState('')
     const [images, setImages] = useState([]);
@@ -44,6 +45,7 @@ function FoundReport() {
             setName('')
             setPhoneNo('')
             setNIC('')
+            setEmail('')
             setItems('')
             setDescription('')
             setImages([])
@@ -53,8 +55,8 @@ function FoundReport() {
             setLocation('')
             setDistrict('')
             setNearestPoliceStation('')
-            navigate('/reports')
-            window.location.reload()
+            // navigate('/reports')
+            // window.location.reload()
             toast.success('Your has been successfully created found report.')
 
         }
@@ -70,6 +72,7 @@ function FoundReport() {
     const handleNameChange = (e) => setName(e.target.value)
     const handlePhoneNoChange = (e) => setPhoneNo(e.target.value)
     const handleNICChange = (e) => setNIC(e.target.value)
+    const handleEmailChange = (e) => setEmail(e.target.value)
     const handleItemsChange = (e) => setItems(e.target.value)
     const handleDescriptionChange = (e) => setDescription(e.target.value)
     const handleImageChange = (e) => {
@@ -94,6 +97,7 @@ function FoundReport() {
     const canSave = [name,
         phoneNo,
         nic,
+        email,
         items,
         description,
         images,
@@ -133,6 +137,7 @@ function FoundReport() {
                     name,
                     phoneNo,
                     nic,
+                    email,
                     items,
                     description,
                     image: imageUrls,
@@ -243,13 +248,13 @@ function FoundReport() {
     }
 
     return (
-         <section className="py-16 px-4 flex justify-center bg-gradient-to-b from-blue-100 via-white to-blue-50">
-                <form
-                    action=""
-                    method="POST"
-                    onSubmit={handleSubmit}
-                    className="bg-white/60 backdrop-blur-md border border-blue-200 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-xl px-6 py-10 max-w-[800px] w-full drop-shadow-xl transition-all duration-300"
-                >
+        <section className="py-16 px-4 flex justify-center bg-gradient-to-b from-blue-100 via-white to-blue-50">
+            <form
+                action=""
+                method="POST"
+                onSubmit={handleSubmit}
+                className="bg-white/60 backdrop-blur-md border border-blue-200 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-xl px-6 py-10 max-w-[800px] w-full drop-shadow-xl transition-all duration-300"
+            >
                 <h2 className="text-2xl font-bold text-blue-950 pb-4">Found Item Report</h2>
 
                 <label className="font-semibold" htmlFor="name">Name</label>
@@ -288,7 +293,17 @@ function FoundReport() {
                         />
                     </div>
                 </div>
-
+                <div>
+                    <label className="font-semibold" htmlFor="nic">E-mail</label><br />
+                    <input
+                        type="text"
+                        id="email" className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                        placeholder="Enter your E-mail"
+                        required
+                        value={email}
+                        onChange={handleEmailChange}
+                    />
+                </div>
 
                 <label className="font-semibold" htmlFor="items">Found Items</label>
                 <textarea
