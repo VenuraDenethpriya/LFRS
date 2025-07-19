@@ -22,7 +22,13 @@ app.use('*', cors({
     // origin: frontendUrl,
      origin: frontendUrl,
     credentials: true,
-    allowedHeaders: ["Authorization", "Content-Type", "Origin", "Accept"],
+    allowedHeaders: [
+        "Authorization", 
+        "Content-Type", 
+        "Origin", 
+        "Accept"
+    ],
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
 }));
 
 app.use(clerkMiddleware({
