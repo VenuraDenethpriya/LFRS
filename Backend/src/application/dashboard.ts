@@ -291,5 +291,6 @@ export const getDashboardData = async (req: Request, res: Response, next: NextFu
         });
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error' });
+        next(error);
     }
 };

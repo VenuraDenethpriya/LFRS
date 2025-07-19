@@ -1,12 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { buildQueryString } from "./features/queryString";
 
+
+const baseUrl = import.meta.env.VITE_BASE_URL;
 // Define a service using a base URL and expected endpoints
 export const reportApi = createApi({
   reducerPath: "reportApi",
 
   baseQuery: fetchBaseQuery({ 
-    baseUrl: "http://localhost:8000/api/",
+    baseUrl: baseUrl,
+    credentials: "include",
     prepareHeaders: async (headers) => {
       const token = await window.Clerk?.session?.getToken();
       if (token) {
