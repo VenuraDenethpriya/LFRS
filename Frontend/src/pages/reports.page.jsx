@@ -66,18 +66,18 @@ export default function ItemReports() {
 
 
 
-    useEffect(() => {
-        if (isLostError) {
-            toast.error(lostError?.message || "An error occurred while fetching lost reports.", {
-                className: "messagePosition"
-            });
-        }
-        if (isFoundError) {
-            toast.error(foundError?.message || "An error occurred while fetching found reports.", {
-                className: "messagePosition"
-            });
-        }
-    }, [isLostError, isFoundError, lostError, foundError]);
+    // useEffect(() => {
+    //     if (isLostError) {
+    //         toast.error(lostError?.message || "An error occurred while fetching lost reports.", {
+    //             className: "messagePosition"
+    //         });
+    //     }
+    //     if (isFoundError) {
+    //         toast.error(foundError?.message || "An error occurred while fetching found reports.", {
+    //             className: "messagePosition"
+    //         });
+    //     }
+    // }, [isLostError, isFoundError, lostError, foundError, isLoaded]);
 
     useEffect(() => {
         if (user) {
@@ -85,7 +85,7 @@ export default function ItemReports() {
         } else {
             console.log("User object is not yet available.");
         }
-    }, [user]);
+    }, [user, isLoaded]);
 
     // Function to clear all filter inputs
     const handleClearFilters = () => {
@@ -99,7 +99,14 @@ export default function ItemReports() {
     };
 
     if (!isLoaded) {
-        return null;
+        return (
+            <section className="bg-slate-50 min-h-screen">
+                <div className="container mx-auto p-4">
+                    <h1 className="text-3xl font-bold text-blue-950 mb-6">Lost and Found Items Reports</h1>
+                    <p className="text-center text-gray-600">Loading user data...</p>
+                </div>
+            </section>
+        )
     }
 
     if (isLostLoading || isFoundLoading) {

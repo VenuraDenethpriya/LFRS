@@ -68,7 +68,7 @@ function LostReport() {
             setLicenseNo('')
             setPassportNo('')
             navigate('/reports')
-            window.location.reload()
+            // window.location.reload()
             toast.success('Your has been successfully created lost report.')
 
         }

@@ -24,102 +24,87 @@ export const createFoundReport = async (req: Request, res: Response, next: NextF
   }
 }
 
-export const getFoundReport = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const {
-      referance,
-      category,
-      location,
-      policeStation,
-      district,
-      date,
-      status,
-      limit = '10',
-      offset = '0',
-    } = req.query;
+// export const getFoundReport = async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     const {
+//       referance,
+//       category,
+//       location,
+//       policeStation,
+//       district,
+//       date,
+//       status,
+//       limit = '10',
+//       offset = '0',
+//     } = req.query;
 
-    const query: any = {};
+//     const query: any = {};
 
-    interface SessionClaims {
-      metadata?: {
-        role?: string;
-      };
-    }
+//     interface SessionClaims {
+//       metadata?: {
+//         role?: string;
+//       };
+//     }
 
-
-    const auth = getAuth(req);
-    console.log("Full Clerk session claims received:", auth.sessionClaims);
-
-    interface SessionClaims {
-      metadata?: {
-        role?: string;
-      };
-      // Add other potential top-level claims you see in your logs if needed
-      azp?: string;
-      exp?: number;
-      fva?: number[];
-      iat?: number;
-      iss?: string;
-      nbf?: number;
-      sid?: string;
-      sub?: string;
-    }
-    
-    const sessionClaims = auth.sessionClaims as SessionClaims;
-    const { userId } = getAuth(req);
-    console.log("Clerk User ID:", userId);
-    console.log("Clerk Session Claims Metadata:", sessionClaims?.metadata);
-    console.log("Clerk User Role:", sessionClaims?.metadata?.role);
-    console.log("Full Clerk session claims:", auth.sessionClaims);
-
-    if (!userId) {
-      // If no userId, the user is not authenticated.
-      // Depending on your requirements, you might return an empty array,
-      // or explicitly deny access. Here, we deny access.
-      console.log("Unauthorized access: No user ID found.");
-      return res.status(401).json({ message: "Unauthorized: User not authenticated." });
-    }
-
-    if (sessionClaims?.metadata?.role !== "admin") {
-      // If the user is not an admin, they should only see reports they created.
-      // Ensure your FoundReport model has a 'createdBy' field storing the Clerk userId.
-      query.createdBy = userId;
-      console.log(`User ${userId} (not admin) is requesting reports. Filtering by createdBy.`);
-    } else {
-      // If the user is an admin, no 'createdBy' filter is applied,
-      // allowing them to see all reports.
-      console.log(`Admin user ${userId} is requesting all reports.`);
-    }
+//     const auth = getAuth(req);
+//     console.log("Full Clerk session claims received:", auth.sessionClaims);
 
 
-    if (referance) query.referanceNo = { $regex: referance, $options: 'i' };
-    if (category) query.category = { $in: [category] };
-    if (location) query.location = { $regex: location, $options: 'i' };
-    if (policeStation) query.nearestPoliceStation = { $regex: policeStation, $options: 'i' };
-    if (district) query.district = { $regex: district, $options: 'i' };
+//     const sessionClaims = auth.sessionClaims as SessionClaims;
+//     const { userId } = getAuth(req);
+//     console.log("Clerk User ID:", userId);
+//     console.log("Clerk Session Claims Metadata:", sessionClaims?.metadata);
+//     console.log("Clerk User Role:", sessionClaims?.metadata?.role);
+//     console.log("Full Clerk session claims:", auth.sessionClaims);
+
+//     if (!userId) {
+//       // If no userId, the user is not authenticated.
+//       // Depending on your requirements, you might return an empty array,
+//       // or explicitly deny access. Here, we deny access.
+//       console.log("Unauthorized access: No user ID found.");
+//       return res.status(401).json({ message: "Unauthorized: User not authenticated." });
+//     }
+
+//     if (sessionClaims?.metadata?.role !== "admin") {
+//       // If the user is not an admin, they should only see reports they created.
+//       // Ensure your FoundReport model has a 'createdBy' field storing the Clerk userId.
+//       query.createdBy = userId;
+//       console.log(`User ${userId} (not admin) is requesting reports. Filtering by createdBy.`);
+//     } else {
+//       // If the user is an admin, no 'createdBy' filter is applied,
+//       // allowing them to see all reports.
+//       console.log(`Admin user ${userId} is requesting all reports.`);
+//     }
 
 
-    if (date && typeof date === 'string') {
-      query.dateOfFound = new Date(date);
-    }
-    if (status) query.status = { $regex: status, $options: 'i' };
-    console.log("Final Query:", query);
+//     if (referance) query.referanceNo = { $regex: referance, $options: 'i' };
+//     if (category) query.category = { $in: [category] };
+//     if (location) query.location = { $regex: location, $options: 'i' };
+//     if (policeStation) query.nearestPoliceStation = { $regex: policeStation, $options: 'i' };
+//     if (district) query.district = { $regex: district, $options: 'i' };
 
-    const totalCount = await FoundReport.countDocuments(query);
-    const reports = await FoundReport.find(query)
-      .limit(parseInt(limit as string))
-      .skip(parseInt(offset as string))
-      .populate('category')
-      .sort({ createdAt: -1 });
-    return res.status(200).json({
-      totalCount,
-      data: reports,
-    }
-    );
-  } catch (error) {
-    next(error);
-  }
-}
+
+//     if (date && typeof date === 'string') {
+//       query.dateOfFound = new Date(date);
+//     }
+//     if (status) query.status = { $regex: status, $options: 'i' };
+//     console.log("Final Query:", query);
+
+//     const totalCount = await FoundReport.countDocuments(query);
+//     const reports = await FoundReport.find(query)
+//       .limit(parseInt(limit as string))
+//       .skip(parseInt(offset as string))
+//       .populate('category')
+//       .sort({ createdAt: -1 });
+//     return res.status(200).json({
+//       totalCount,
+//       data: reports,
+//     }
+//     );
+//   } catch (error) {
+//     next(error);
+//   }
+// }
 
 export const getFoundReportById = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -188,5 +173,77 @@ export const deleteFoundReport = async (req: Request, res: Response, next: NextF
     return res.status(200).send("You have successfully deleted the report");
   } catch (error) {
     next(error)
+  }
+}
+
+export const getFoundReport = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {
+      referance,
+      category,
+      location,
+      policeStation,
+      district,
+      date,
+      status,
+      limit = '10',
+      offset = '0',
+    } = req.query;
+
+    const query: any = {};
+
+    // interface SessionClaims {
+    //   metadata?: {
+    //     role?: string;
+    //   };
+    // }
+
+    const auth = getAuth(req);
+    const { userId } = auth;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized: User not authenticated." });
+    }
+
+    // Fetch user info from Clerk
+    const user = await clerkClient.users.getUser(userId);
+    // Try publicMetadata first, fallback to privateMetadata if needed
+    const userRole = user.publicMetadata?.role || user.privateMetadata?.role;
+    console.log("Clerk User Role:", userRole);
+
+    if (userRole !== "admin") {
+      query.createBy = userId;
+      console.log(`User ${userId} (not admin) is requesting reports. Filtering by createdBy.`);
+    } else {
+      console.log(`Admin user ${userId} is requesting all reports.`);
+    }
+
+
+    if (referance) query.referanceNo = { $regex: referance, $options: 'i' };
+    if (category) query.category = { $in: [category] };
+    if (location) query.location = { $regex: location, $options: 'i' };
+    if (policeStation) query.nearestPoliceStation = { $regex: policeStation, $options: 'i' };
+    if (district) query.district = { $regex: district, $options: 'i' };
+
+
+    if (date && typeof date === 'string') {
+      query.dateOfFound = new Date(date);
+    }
+    if (status) query.status = { $regex: status, $options: 'i' };
+    console.log("Final Query:", query);
+
+    const totalCount = await FoundReport.countDocuments(query);
+    const reports = await FoundReport.find(query)
+      .limit(parseInt(limit as string))
+      .skip(parseInt(offset as string))
+      .populate('category')
+      .sort({ createdAt: -1 });
+    return res.status(200).json({
+      totalCount,
+      data: reports,
+    }
+    );
+  } catch (error) {
+    next(error);
   }
 }
