@@ -9,19 +9,34 @@ import cors from 'cors';
 import { clerkMiddleware } from "@clerk/express";
 import { dashboardRouter } from "./api/dashboard";
 import { ClerkExpressWithAuth } from '@clerk/clerk-sdk-node';
+const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node');
+
 
 const app = express();
 const publishableKey = process.env.VITE_CLERK_PUBLISHABLE_KEY;
-const secretKey = process.env.VITE_CLERK_SECRET_KEY
+const secretKey = process.env.CLERK_SECRET_KEY
+const frontendUrl = process.env.FRONTEND_URI;
 
 app.use(express.json());
-app.use(clerkMiddleware({
-   publishableKey,secretKey
-}))
+
 app.use(cors({ 
     origin:`http://65.0.99.199`,
     credentials: true,
+    allowedHeaders: [
+        "Authorization", 
+        "Content-Type", 
+        "Origin", 
+        "Accept"
+    ],
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
 }));
+
+app.use(clerkMiddleware({
+    publishableKey,
+    secretKey
+}))
+// app.use(ClerkExpressRequireAuth());
+
 
 
 //Pre-middleware

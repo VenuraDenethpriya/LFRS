@@ -1,8 +1,8 @@
 import express from "express";
 import { createLostReport, deleteLostReport, getLostProductByCategory, geTLostReport, getLostReportById, UpdateReport } from "../application/lostItems";
 import { asyncHandler } from "../utils";
-import { isAuthonticated } from "./middleware/authentication-middleware";
-import { upload } from "./middleware/upload";
+import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
+import { isAdmin } from "./middleware/authorization-middleware";
 
 export const lostRouter = express.Router();
 lostRouter
@@ -11,13 +11,13 @@ lostRouter
         await isAuthonticated(req, res, next);
         await createLostReport(req, res, next);
     }))*/
-   .post((asyncHandler(createLostReport)))
-    .get(asyncHandler(geTLostReport));
+   .post((ClerkExpressRequireAuth(),asyncHandler(createLostReport)))
+    .get((ClerkExpressRequireAuth(),asyncHandler(geTLostReport)));
 
 
 lostRouter
     .route('/:id')
-    .get((asyncHandler(getLostReportById)))
-    .patch(isAuthonticated,(asyncHandler(UpdateReport)))
-    .delete(isAuthonticated,(asyncHandler(deleteLostReport)))
-    .get(isAuthonticated,(asyncHandler(getLostProductByCategory)));
+    .get((ClerkExpressRequireAuth(),isAdmin, asyncHandler(getLostReportById)))
+    .patch((ClerkExpressRequireAuth(),asyncHandler(UpdateReport)))
+    .delete((ClerkExpressRequireAuth(),asyncHandler(deleteLostReport)))
+    .get((ClerkExpressRequireAuth(),asyncHandler(getLostProductByCategory)));

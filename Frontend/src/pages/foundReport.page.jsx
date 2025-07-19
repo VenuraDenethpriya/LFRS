@@ -40,6 +40,11 @@ function FoundReport() {
     const flatCategory = categoryDisplay.flat();
     console.log("Category Display:", categoryDisplay)
 
+    const [serialNo, setSerialNo] = useState('')
+    const [imeiNo, setIMEINo] = useState('')
+    const [licenseNo, setLicenseNo] = useState('')
+    const [passportNo, setPassportNo] = useState('')
+
     useEffect(() => {
         if (isSuccess) {
             setName('')
@@ -55,8 +60,12 @@ function FoundReport() {
             setLocation('')
             setDistrict('')
             setNearestPoliceStation('')
+            setSerialNo('')
+            setIMEINo('')
+            setLicenseNo('')
+            setPassportNo('')
             navigate('/reports')
-            window.location.reload()
+            // window.location.reload()
             toast.success('Your has been successfully created found report.')
 
         }
@@ -92,7 +101,10 @@ function FoundReport() {
     const handleLocationChange = (e) => setLocation(e.target.value)
     const handleDistricChange = (e) => setDistrict(e.target.value)
     const handleNearestPoliceStationChange = (e) => setNearestPoliceStation(e.target.value)
-
+    const handleSerialNoChange = (e) => setSerialNo(e.target.value)
+    const handleIMEINoChange = (e) => setIMEINo(e.target.value)
+    const handleLicenseNoChange = (e) => setLicenseNo(e.target.value)
+    const handlePassportNoChange = (e) => setPassportNo(e.target.value)
 
     const canSave = [name,
         phoneNo,
@@ -100,7 +112,7 @@ function FoundReport() {
         email,
         items,
         description,
-        images,
+        // images,
         category,
         dateOfFound,
         timeOfFound,
@@ -147,7 +159,11 @@ function FoundReport() {
                     district,
                     location,
                     nearestPoliceStation,
-                    createBy: user.id
+                    createBy: user.id,
+                    serialNo,
+                    imeiNo,
+                    licenseNo,
+                    passportNo
                 })
             } catch (error) {
                 toast.error("Failed to create found report. Please try again.", { position: "bottom-right" });
@@ -262,7 +278,7 @@ function FoundReport() {
                 <input
                     type="text"
                     id="name"
-                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                     placeholder="Enter your name"
                     required
                     value={name}
@@ -275,7 +291,7 @@ function FoundReport() {
                         <input
                             type="tel"
                             id="phoneNo"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                             placeholder="Enter your phone number"
                             required
                             value={phoneNo}
@@ -286,7 +302,7 @@ function FoundReport() {
                         <label className="font-semibold" htmlFor="nic">NIC</label><br />
                         <input
                             type="text"
-                            id="nic" className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                            id="nic" className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                             placeholder="Enter your NIC number"
                             required
                             value={nic}
@@ -298,7 +314,7 @@ function FoundReport() {
                     <label className="font-semibold" htmlFor="nic">E-mail</label><br />
                     <input
                         type="text"
-                        id="email" className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                        id="email" className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                         placeholder="Enter your E-mail"
                         required
                         value={email}
@@ -309,7 +325,7 @@ function FoundReport() {
                 <label className="font-semibold" htmlFor="items">Found Items</label>
                 <textarea
                     id="items"
-                    className="w-full h-40 px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                    className="w-full h-40 px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                     placeholder="Enter the lost items"
                     required
                     value={items}
@@ -321,7 +337,7 @@ function FoundReport() {
                 <label className="font-semibold" htmlFor="description">Description</label>
                 <textarea
                     id="description"
-                    className="w-full h-40 px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                    className="w-full h-40 px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                     placeholder="Enter a detailed description"
                     value={description}
                     onChange={handleDescriptionChange}
@@ -329,12 +345,12 @@ function FoundReport() {
                 </textarea>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2">
-                    <div className="mr-4 sm:mr-0">
+                    <div className="mr-4">
                         <label className="font-semibold" htmlFor="image">Images</label>
                         <input
                             type="file"
                             id="image"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                             multiple
                             accept=".jpg,.jpeg,.png"
                             onChange={handleImageChange}
@@ -358,7 +374,7 @@ function FoundReport() {
                         <select
                             name="category"
                             id="category"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline focus:outline-blue-600"
                             value={category}
                             onChange={(e) => {
                                 handleCategoryChange(e)
@@ -394,6 +410,70 @@ function FoundReport() {
                             ))}
                         </div>
                     </div>
+                    {
+                        flatCategory?.includes("Licence") && (
+                            <div className="mr-4">
+                                <label className="font-semibold" htmlFor="Licence">License No</label><br />
+                                <input
+                                    type="text"
+                                    id="Licence"
+                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600 "
+                                    placeholder="Enter your license number"
+                                    required
+                                    value={licenseNo}
+                                    onChange={handleLicenseNoChange}
+                                />
+                            </div>
+                        )
+                    }
+                    {
+                        (flatCategory?.includes("Phone") || flatCategory?.includes("Tablet")) && (
+                            <div className="mr-4">
+                                <label className="font-semibold" htmlFor="IMEI">IMEI No</label><br />
+                                <input
+                                    type="text"
+                                    id="IMEI"
+                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600 "
+                                    placeholder="Enter phone IMEI no"
+                                    required
+                                    value={imeiNo}
+                                    onChange={handleIMEINoChange}
+                                />
+                            </div>
+                        )
+                    }
+                    {
+                        (flatCategory?.includes("Laptop") || flatCategory?.includes("Camera")) && (
+                            <div className="mr-4">
+                                <label className="font-semibold" htmlFor="Serial">Serial No</label><br />
+                                <input
+                                    type="text"
+                                    id="Serial"
+                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                                    placeholder="Enter laptop serial no"
+                                    required
+                                    value={serialNo}
+                                    onChange={handleSerialNoChange}
+                                />
+                            </div>
+                        )
+                    }
+                    {
+                        flatCategory?.includes("Passport") && (
+                            <div className="mr-4">
+                                <label className="font-semibold" htmlFor="passport">Passport No</label><br />
+                                <input
+                                    type="text"
+                                    id="passport"
+                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
+                                    placeholder="Enter passport no"
+                                    required
+                                    value={passportNo}
+                                    onChange={handlePassportNoChange}
+                                />
+                            </div>
+                        )
+                    }
 
                 </div>
 
@@ -403,7 +483,7 @@ function FoundReport() {
                         <input
                             type="date"
                             id="dateOfFound"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                             required
                             value={dateOfFound}
                             onChange={handleDateOfFoundChange}
@@ -415,7 +495,7 @@ function FoundReport() {
                         <input
                             type="time"
                             id="timeOfFound"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline-none focus:outline-blue-600"
                             required
                             value={timeOfFound}
                             onChange={handleTimeOfFoundChange}
@@ -427,7 +507,7 @@ function FoundReport() {
                 <input
                     type="text"
                     id="location"
-                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline focus:outline-blue-600"
+                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline focus:outline-blue-600"
                     placeholder="Enter the location of the lost item"
                     required
                     value={location}
@@ -440,7 +520,7 @@ function FoundReport() {
                         <select
                             name="distric"
                             id="distric"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline focus:outline-blue-600"
                             value={district}
                             onChange={handleDistricChange}
                         >
@@ -463,7 +543,7 @@ function FoundReport() {
                         <select
                             name="nearestPoliceStation"
                             id="nearestPoliceStation"
-                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline focus:outline-blue-600"
+                            className="w-full px-3 py-2 mb-4 text-sm border-gray-300 border-2 rounded-md focus:outline focus:outline-blue-600"
                             value={nearestPoliceStation}
                             onChange={handleNearestPoliceStationChange}
                         >
