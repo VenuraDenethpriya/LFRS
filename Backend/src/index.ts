@@ -19,7 +19,7 @@ app.use(clerkMiddleware({
    publishableKey,secretKey
 }))
 app.use(cors({ 
-    origin:`http://localhost:5173`,
+    origin:`http://65.0.99.199`,
     credentials: true,
 }));
 

@@ -6,7 +6,7 @@ export const reportApi = createApi({
   reducerPath: "reportApi",
 
   baseQuery: fetchBaseQuery({ 
-    baseUrl: "http://localhost:8000/api/",
+    baseUrl: "http://65.0.99.199:8000/api/",
     prepareHeaders: async (headers) => {
       const token = await window.Clerk?.session?.getToken();
       if (token) {
