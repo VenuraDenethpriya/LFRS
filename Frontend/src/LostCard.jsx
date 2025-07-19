@@ -120,12 +120,20 @@ function LostCard(props) {
                                 <div className="">
                                     <div>
                                         <div>
-                                            <img onClick={
-                                                user.publicMetadata.role === "admin"
-                                                    ? () => navigate(`/reports/${props.id}/lost`)
-                                                    : undefined
-                                            } src={props.image} alt="Lost Item" className="w-32 h-32 object-cover rounded-lg" />
+                                            {props.image ? (
+                                                <img
+                                                    onClick={
+                                                        user.publicMetadata.role === "admin"
+                                                            ? () => navigate(`/reports/${props.id}/lost`)
+                                                            : undefined
+                                                    }
+                                                    src={props.image}
+                                                    alt="Lost Item"
+                                                    className="w-32 h-32 object-cover rounded-lg cursor-pointer"
+                                                />
+                                            ) : <div></div>}
                                         </div>
+
                                         <div className="flex flex-row gap-x-4">
                                             {
                                                 props.status !== 'FOUND' && (

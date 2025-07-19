@@ -1,6 +1,7 @@
 import express from 'express';
 import { createFoundReport, deleteFoundReport, getFoundReport, getFoundReportById, updateFoundReport } from '../application/fountItems';
 import { asyncHandler } from '../utils';
+import { isAuthonticated } from './middleware/authentication-middleware';
 
 export const foundRouter = express.Router();
 

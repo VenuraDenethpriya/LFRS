@@ -5,14 +5,18 @@ import { AiTwotoneCloseCircle } from "react-icons/ai";
 import { useCreateLostReportsMutation, useGetCategoriesQuery } from "@/lib/api";
 import { redirect, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { uploadImageToCloudinary } from "@/lib/cloudinery";
 
 function LostReport() {
-    const { user } = useAuth()
+
 
     const { isSignedIn } = useAuth()
+    const { user } = useUser()
+    console.log("User:", user?.id)
+
+
     const [createLostReport, { isLoading, isError, error, isSuccess }] = useCreateLostReportsMutation()
     const { data: categoriesList } = useGetCategoriesQuery();
 
@@ -35,7 +39,13 @@ function LostReport() {
     const [nearestPoliceStation, setNearestPoliceStation] = useState('')
 
     const [categoryDisplay, setCategoryDisplay] = useState([])
+    console.log(categoryDisplay)
     const flatCategory = categoryDisplay.flat();
+
+    const [serialNo, setSerialNo] = useState('')
+    const [imeiNo, setIMEINo] = useState('')
+    const [licenseNo, setLicenseNo] = useState('')
+    const [passportNo, setPassportNo] = useState('')
 
     useEffect(() => {
         if (isSuccess) {
@@ -52,6 +62,10 @@ function LostReport() {
             setLocation('')
             setDistrict('')
             setNearestPoliceStation('')
+            setSerialNo('')
+            setIMEINo('')
+            setLicenseNo('')
+            setPassportNo('')
             navigate('/reports')
             window.location.reload()
             toast.success('Your has been successfully created lost report.')
@@ -88,20 +102,30 @@ function LostReport() {
     const handleLocationChange = (e) => setLocation(e.target.value)
     const handleDistricChange = (e) => setDistrict(e.target.value)
     const handleNearestPoliceStationChange = (e) => setNearestPoliceStation(e.target.value)
+    const handleSerialNoChange = (e) => setSerialNo(e.target.value)
+    const handleIMEINoChange = (e) => setIMEINo(e.target.value)
+    const handleLicenseNoChange = (e) => setLicenseNo(e.target.value)
+    const handlePassportNoChange = (e) => setPassportNo(e.target.value)
 
-    const canSave = [name,
+    const canSave = [
+        name,
         phoneNo,
         nic,
         email,
         items,
         description,
-        images,
+        // images,
         category,
         dateOfLost,
         timeOfLost,
         district,
         location,
-        nearestPoliceStation]
+        nearestPoliceStation,
+        // serialNo,
+        // imeiNo,
+        // licenseNo,
+        // passportNo
+    ]
         .every(Boolean) && !isLoading
 
     const handleSubmit = async (e) => {
@@ -143,7 +167,11 @@ function LostReport() {
                     district,
                     location,
                     nearestPoliceStation,
-                    createBy: user?.id
+                    createBy: user.id,
+                    serialNo,
+                    imeiNo,
+                    licenseNo,
+                    passportNo
                 })
             } catch (error) {
                 toast.error("Failed to create lost report. Please try again.", { position: "bottom-right" });
@@ -321,7 +349,7 @@ function LostReport() {
                 </textarea>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2">
-                    <div className="mr-4 sm:mr-0">
+                    <div className="mr-4">
                         <label className="font-semibold" htmlFor="image">Images</label>
                         <input
                             type="file"
@@ -390,6 +418,71 @@ function LostReport() {
                             ))}
                         </div>
                     </div>
+                    {
+                        flatCategory?.includes("Licence") && (
+                            <div className="mr-4">
+                                <label className="font-semibold" htmlFor="Licence">License No</label><br />
+                                <input
+                                    type="text"
+                                    id="Licence"
+                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600 "
+                                    placeholder="Enter your license number"
+                                    required
+                                    value={licenseNo}
+                                    onChange={handleLicenseNoChange}
+                                />
+                            </div>
+                        )
+                    }
+                    {
+                        (flatCategory?.includes("Phone") || flatCategory?.includes("Tablet")) && (
+                            <div className="mr-4">
+                                <label className="font-semibold" htmlFor="IMEI">IMEI No</label><br />
+                                <input
+                                    type="text"
+                                    id="IMEI"
+                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600 "
+                                    placeholder="Enter phone IMEI no"
+                                    required
+                                    value={imeiNo}
+                                    onChange={handleIMEINoChange}
+                                />
+                            </div>
+                        )
+                    }
+                    {
+                        (flatCategory?.includes("Laptop") || flatCategory?.includes("Camera")) && (
+                            <div className="mr-4">
+                                <label className="font-semibold" htmlFor="Serial">Serial No</label><br />
+                                <input
+                                    type="text"
+                                    id="Serial"
+                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                                    placeholder="Enter laptop serial no"
+                                    required
+                                    value={serialNo}
+                                    onChange={handleSerialNoChange}
+                                />
+                            </div>
+                        )
+                    }
+                    {
+                        flatCategory?.includes("Passport") && (
+                            <div className="mr-4">
+                                <label className="font-semibold" htmlFor="passport">Passport No</label><br />
+                                <input
+                                    type="text"
+                                    id="passport"
+                                    className="w-full px-3 py-2 mb-4 text-sm border-gray-300 rounded-md focus:outline-none focus:outline-blue-600"
+                                    placeholder="Enter passport no"
+                                    required
+                                    value={passportNo}
+                                    onChange={handlePassportNoChange}
+                                />
+                            </div>
+                        )
+                    }
+
 
                 </div>
 
