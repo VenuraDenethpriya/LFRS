@@ -13,11 +13,11 @@ function DashboardBarChart(props) {
   const chartConfig = {
     lost: {
       label: "Lost",
-      color: "#fecdd3",
+      color: "#e30d26ff",
     },
     found: {
       label: "Found",
-      color: "#d9f99d",
+      color: "#16a34a",
     },
   };
 

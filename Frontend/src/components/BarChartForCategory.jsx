@@ -17,11 +17,11 @@ import {
 const chartConfig = {
   lost: {
     label: "Lost",
-    color: "#fecdd3",
+    color: "#dc2626",
   },
   found: {
     label: "Found",
-    color: "#d9f99d",
+    color: "#16a34a",
   },
 };
 
