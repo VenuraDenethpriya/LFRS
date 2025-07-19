@@ -60,7 +60,7 @@ function StatusChangeMenu(props) {
                 {getStatusBadge(props.status)}
             </DropdownMenuTrigger>
             {
-                user.publicMetadata.role === "admin" ? (<DropdownMenuContent side="right-start">
+                user?.publicMetadata?.role === "admin" ? (<DropdownMenuContent side="right-start">
                     {
                         props.type === "lost" ? (
                             <DropdownMenuItem onClick={() => handleUpdate('FOUND')}>

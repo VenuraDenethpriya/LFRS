@@ -13,7 +13,7 @@ function FoundReport() {
 
     const { isSignedIn } = useAuth()
     const { user } = useUser()
-    console.log("User:", user.id)
+    console.log("User:", user?.id)
 
     const [crateFoundReport, { isLoading, isError, error, isSuccess }] = useCreateFoundReportsMutation()
     const { data: categoriesList } = useGetCategoriesQuery();
@@ -55,8 +55,8 @@ function FoundReport() {
             setLocation('')
             setDistrict('')
             setNearestPoliceStation('')
-            // navigate('/reports')
-            // window.location.reload()
+            navigate('/reports')
+            window.location.reload()
             toast.success('Your has been successfully created found report.')
 
         }
@@ -170,6 +170,7 @@ function FoundReport() {
     if (!isSignedIn) {
         navigate('/signin')
     }
+
     if (isLoading) {
         return (
             <section className="py-16 px-4 flex justify-center bg-gradient-to-b from-blue-100 via-white to-blue-50">

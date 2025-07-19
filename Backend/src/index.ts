@@ -8,6 +8,7 @@ import globalErrorHandlingMiddleware from "./api/middleware/global-error-handlin
 import cors from 'cors';
 import { clerkMiddleware } from "@clerk/express";
 import { dashboardRouter } from "./api/dashboard";
+import { ClerkExpressWithAuth } from '@clerk/clerk-sdk-node';
 
 const app = express();
 const publishableKey = process.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -17,7 +18,6 @@ app.use(express.json());
 app.use(clerkMiddleware({
    publishableKey,secretKey
 }))
-
 app.use(cors({ 
     origin:`http://localhost:5173`,
     credentials: true,

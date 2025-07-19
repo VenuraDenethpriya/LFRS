@@ -111,18 +111,6 @@ export const getFoundReportById = async (req: Request, res: Response, next: Next
     }
 }
 
-// export const updateFoundReport = async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const id = req.params.id
-//         const foundReport = await FoundReport.findByIdAndUpdate(id, req.body)
-//         if (!foundReport) {
-//             throw new NotFoundError("Could not find FoundReport")
-//         }
-//         return res.status(200).json(foundReport).send("Your found report has been updated");
-//     } catch (error) {
-//         next(error);
-//     }
-// }
 
 export const updateFoundReport = async (req: Request, res: Response, next: NextFunction) => {
   try {

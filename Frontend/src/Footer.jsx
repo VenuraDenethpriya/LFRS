@@ -5,7 +5,7 @@ import { MdEmail } from "react-icons/md";
 
 function Footer() {
   return (
-    <footer className="px-6 py-12 text-white bg-gradient-to-tr from-blue-900 via-blue-950 to-black">
+    <footer id="footer" className="px-6 py-12 text-white bg-gradient-to-tr from-blue-900 via-blue-950 to-black">
       <div className="grid grid-cols-1 gap-10 p-8 mx-auto border shadow-xl max-w-7xl md:grid-cols-3 bg-white/5 backdrop-blur-md rounded-2xl border-white/10">
 
         {/* Social Media */}

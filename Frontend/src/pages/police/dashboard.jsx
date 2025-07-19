@@ -15,21 +15,21 @@ function PoliceDashboard() {
 
     // HEX values for chart fills, matching your badge colors but aiming for better visibility in charts
     const LostReportStatusData = [
-        { name: "LOST", value: data?.LostReportTotal, fill: "#dc2626" }, // Tailwind red-600 (stronger red)
-        { name: "FOUND", value: data?.LostFoundReportTotal, fill: "#2563eb" }, // Tailwind blue-600 (stronger blue)
-        { name: "IMFORMED", value: data?.InformedReportTotal, fill: "#eab308" }, // Tailwind yellow-600 (stronger yellow)
-        { name: "COLLECTED", value: data?.CollectedReportTotal, fill: "#16a34a" }, // Tailwind green-600 (stronger green)
-        { name: "REMOVED", value: data?.RemoveReportTotal, fill: "#6b7280" }, // Tailwind gray-500/600 (a solid gray)
-        { name: "NOT COLLECTED", value: data?.NotCollectedReportTotal, fill: "#7c3aed" }, // Tailwind purple-600 (stronger purple)
-    ];
+    { name: "LOST", value: data?.LostReportTotal, fill: "#ef4444" },          // Indigo 500
+    { name: "FOUND", value: data?.LostFoundReportTotal, fill: "#84cc16" },    // Emerald 500
+    { name: "IMFORMED", value: data?.InformedReportTotal, fill: "#f59e0b" },  // Amber 500
+    { name: "COLLECTED", value: data?.CollectedReportTotal, fill: "#3b82f6" },// Blue 500
+    { name: "REMOVED", value: data?.RemoveReportTotal, fill: "#9ca3af" },     // Gray 400
+    { name: "NOT COLLECTED", value: data?.NotCollectedReportTotal, fill: "#8b5cf6" }, // Violet 500
+];
 
-    const FoundReportStatusData = [
-        { name: "FOUND", value: data?.FoundReportTotal, fill: "#2563eb" }, // Tailwind blue-600
-        { name: "IMFORMED", value: data?.InformedFoundReportTotal, fill: "#eab308" }, // Tailwind yellow-600
-        { name: "COLLECTED", value: data?.ClaimedFoundReportTotal, fill: "#16a34a" }, // Tailwind green-600
-        { name: "REMOVED", value: data?.RemoveFoundReportTotal, fill: "#6b7280" }, // Tailwind gray-500/600
-        { name: "NOT COLLECTED", value: data?.NotCollectedFoundReportTotal, fill: "#7c3aed" }, // Tailwind purple-600
-    ];
+const FoundReportStatusData = [
+    { name: "FOUND", value: data?.FoundReportTotal, fill: "#84cc16" },        // Emerald 500
+    { name: "IMFORMED", value: data?.InformedFoundReportTotal, fill: "#f59e0b" }, // Amber 500
+    { name: "COLLECTED", value: data?.ClaimedFoundReportTotal, fill: "#3b82f6" }, // Blue 500
+    { name: "REMOVED", value: data?.RemoveFoundReportTotal, fill: "#9ca3af" },    // Gray 400
+    { name: "NOT COLLECTED", value: data?.NotCollectedFoundReportTotal, fill: "#8b5cf6" }, // Violet 500
+];
 
 
     const LostReportchartData = data?.TotalLostReportForLast3Months?.map(item => ({

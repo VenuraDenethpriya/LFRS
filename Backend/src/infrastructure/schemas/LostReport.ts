@@ -87,6 +87,18 @@ const LostReportSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
         format: 'HH:mm:ss'
+    },
+    licenseNo: {
+        type: String,
+    },
+    imeiNo : {
+        type: String,
+    },
+    serialNo : {
+        type: String,   
+    },
+    passportNo : {
+        type: String,
     }
 
 })

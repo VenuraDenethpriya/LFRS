@@ -7,13 +7,7 @@ import { buildLostReportQuery, sendConfirmationEmail, sendSMS, sendStatusUpdateE
 
 export const createLostReport = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const files = req.files as Express.Multer.File[] | undefined;
-    const imageUrls = files?.map((file) => file.path) || [];
-
-    const report = await LostReport.create({
-      ...req.body,
-      images: imageUrls,
-    });
+    const report = await LostReport.create(req.body);
 
     if (report) {
       // Send confirmation email if email exists

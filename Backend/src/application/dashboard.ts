@@ -6,15 +6,15 @@ import Category from "../infrastructure/schemas/Category";
 export const getDashboardData = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const LostFoundReportTotal = await LostReport.countDocuments({ status: 'FOUND' });
-        const InformedReportTotal = await LostReport.countDocuments({ status: 'INFORMED' });
+        const InformedReportTotal = await LostReport.countDocuments({ status: 'IMFORMED' });
         const CollectedReportTotal = await LostReport.countDocuments({ status: 'COLLECTED' });
         const NotCollectedReportTotal = await LostReport.countDocuments({ status: 'NOT COLLECTED' });
         const RemoveReportTotal = await LostReport.countDocuments({ status: 'REMOVED' });
         const LostReportTotal = await LostReport.countDocuments({ status: 'LOST' });
 
         const FoundReportTotal = await FoundReport.countDocuments({ status: 'FOUND' });
-        const InformedFoundReportTotal = await FoundReport.countDocuments({ status: 'INFORMED' });
-        const ClaimedFoundReportTotal = await FoundReport.countDocuments({ status: 'CLAIMED' });
+        const InformedFoundReportTotal = await FoundReport.countDocuments({ status: 'IMFORMED' });
+        const ClaimedFoundReportTotal = await FoundReport.countDocuments({ status: 'COLLECTED' });
         const RemoveFoundReportTotal = await FoundReport.countDocuments({ status: 'REMOVED' });
         const NotCollectedFoundReportTotal = await FoundReport.countDocuments({ status: 'NOT COLLECTED' });
 

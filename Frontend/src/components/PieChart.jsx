@@ -22,8 +22,8 @@ function DashboardPieChart({ description, ReportStatusData }) {
                             removed: { label: "Removed", color: "#6b7280" },          // Tailwind gray-500/600
                             notCollected: { label: "Not Collected", color: "#7c3aed" }, // Tailwind purple-600
                             informed: { label: "Informed", color: "#eab308" },        // Tailwind yellow-600
-                            found: { label: "Found", color: "#2563eb" },              // Tailwind blue-600
-                            lost: { label: "Lost", color: "#dc2626" },                // Tailwind red-600
+                            found: { label: "Found", color: "#84cc16" },              // Tailwind blue-600
+                            lost: { label: "Lost", color: "#ef4444" },                // Tailwind red-600
                             collected: { label: "Collected", color: "#16a34a" },      // Tailwind green-600
                         
                         }}

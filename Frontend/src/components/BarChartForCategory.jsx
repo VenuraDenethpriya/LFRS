@@ -15,15 +15,15 @@ import {
 } from "@/components/ui/chart";
 
 const chartConfig = {
-  lost: {
-    label: "Lost",
-    color: "#dc2626",
-  },
-  found: {
-    label: "Found",
-    color: "#16a34a",
-  },
-};
+    lost: {
+      label: "Lost",
+      color: "#ef4444",
+    },
+    found: {
+      label: "Found",
+      color: "#84cc16",
+    },
+  };
 
 function BarChartForCategory(props) {
   const [activeChart, setActiveChart] = React.useState("lost");

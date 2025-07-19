@@ -141,58 +141,75 @@ function ReportView() {
                                     Item Details
                                 </CardTitle>
                             </CardHeader>
-                            <CardContent className="space-y-5 p-6">
+
+                            <CardContent className="space-y-6 p-6">
+                                {/* Item Name */}
                                 <div>
                                     <label className="block text-sm text-gray-500 mb-1">Item Name</label>
                                     <p className="text-lg font-semibold capitalize text-gray-800">{report.items}</p>
                                 </div>
 
+                                {/* Categories */}
                                 <div>
                                     <label className="block text-sm text-gray-500 mb-1">Categories</label>
                                     <div className="flex flex-wrap gap-2">
                                         {report.category.map((cat, index) => (
-                                            <Badge key={index} className="px-3 py-1 rounded-full bg-orange-100 text-orange-800 text-xs font-medium shadow-sm">
+                                            <Badge
+                                                key={index}
+                                                className="px-3 py-1 rounded-full bg-orange-100 text-orange-800 hover:bg-orange-300 text-xs font-medium shadow-sm"
+                                            >
                                                 {cat}
                                             </Badge>
                                         ))}
                                     </div>
                                 </div>
 
+                                {/* Description */}
                                 <div>
                                     <label className="block text-sm text-gray-500 mb-1">Description</label>
                                     <p className="text-gray-700 leading-relaxed">{report.description}</p>
                                 </div>
+
+                                {/* Optional Fields */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    {report.serialNo && (
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">Serial No</label>
+                                            <p className="text-gray-700">{report.serialNo}</p>
+                                        </div>
+                                    )}
+                                    {report.imeiNo && (
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">IMEI No</label>
+                                            <p className="text-gray-700">{report.imeiNo}</p>
+                                        </div>
+                                    )}
+                                    {report.licenseNo && (
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">License No</label>
+                                            <p className="text-gray-700">{report.licenseNo}</p>
+                                        </div>
+                                    )}
+                                    {report.passportNo && (
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">Passport No</label>
+                                            <p className="text-gray-700">{report.passportNo}</p>
+                                        </div>
+                                    )}
+                                    {
+                                        report.licenseNo && (
+                                            <div>
+                                                <label className="block text-sm text-gray-500 mb-1">License No</label>
+                                                <p className="text-gray-700">{report.licenseNo}</p>
+                                            </div>
+                                        )
+                                    }
+                                </div>
                             </CardContent>
                         </Card>
 
-                        {/* Reporter Information */}
-                        <Card className="shadow-md border border-gray-200">
-                            <CardHeader className="bg-green-50 rounded-t-lg border-b">
-                                <CardTitle className="flex items-center gap-2 text-green-800 text-lg font-semibold">
-                                    <User className="h-5 w-5" />
-                                    Reporter Information
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-5 p-6">
-                                <div>
-                                    <label className="block text-sm text-gray-500 mb-1">Full Name</label>
-                                    <p className="text-gray-800 text-lg font-semibold">{report.name}</p>
-                                </div>
 
-                                <div>
-                                    <label className="block text-sm text-gray-500 mb-1">Phone Number</label>
-                                    <div className="flex items-center gap-2">
-                                        <Phone className="h-4 w-4 text-gray-500" />
-                                        <p className="text-gray-700">{report.phoneNo}</p>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm text-gray-500 mb-1">NIC</label>
-                                    <p className="text-gray-700">{report.nic}</p>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        
 
                         {/* Report Information */}
                         <Card className="shadow-md border border-gray-200">
@@ -363,6 +380,35 @@ function ReportView() {
                                             <p className="text-gray-800">{report?.timeOfLost || report?.timeOfFound}</p>
                                         </div>
                                     </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Reporter Information */}
+                        <Card className="shadow-md border border-gray-200">
+                            <CardHeader className="bg-green-50 rounded-t-lg border-b">
+                                <CardTitle className="flex items-center gap-2 text-green-800 text-lg font-semibold">
+                                    <User className="h-5 w-5" />
+                                    Reporter Information
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-5 p-6">
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Full Name</label>
+                                    <p className="text-gray-800 text-lg font-semibold">{report.name}</p>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">Phone Number</label>
+                                    <div className="flex items-center gap-2">
+                                        <Phone className="h-4 w-4 text-gray-500" />
+                                        <p className="text-gray-700">{report.phoneNo}</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-gray-500 mb-1">NIC</label>
+                                    <p className="text-gray-700">{report.nic}</p>
                                 </div>
                             </CardContent>
                         </Card>
