@@ -16,11 +16,11 @@ const app = express();
 const publishableKey = process.env.VITE_CLERK_PUBLISHABLE_KEY;
 const secretKey = process.env.CLERK_SECRET_KEY
 const frontendUrl = process.env.FRONTEND_URI;
+
 app.use(express.json());
 
-app.use('*', cors({
-    // origin: frontendUrl,
-     origin: frontendUrl,
+app.use(cors({ 
+    origin:`http://65.0.99.199`,
     credentials: true,
     allowedHeaders: [
         "Authorization", 
