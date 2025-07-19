@@ -22,11 +22,11 @@ function DashboardLineChart(props) {
         },
         lost: {
             label: "Lost",
-            color: "#1d4ed8",
+            color: "#db2f0cff",
         },
         found: {
             label: "Found",
-            color: "#1d4ed8",
+            color: "#18d382ff",
         },
     };
 
