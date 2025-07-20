@@ -24,37 +24,36 @@ function DashboardCard({
         setLastUpdated(formatted);
     }, []);
 
-    const stats = [
-        {
-            title: "Total Lost Reports",
-            value: totalLostReports,
-            icon: <AlertTriangleIcon className="w-7 h-7 text-blue-600" />,
-            gradient: "from-[#c2e9fb] to-[#81a4fd]",
-            iconBg: "bg-blue-100",
-        },
-        {
-            title: "Total Found Reports",
-            value: totalFoundReports,
-            icon: <PackageCheckIcon className="w-7 h-7 text-yellow-700" />,
-            gradient: "from-[#ffe29f] to-[#ffa99f]",
-            iconBg: "bg-yellow-100",
-        },
-        {
-            title: "Total Pending Lost Reports",
-            value: totalPendingLostReports,
-            icon: <HourglassIcon className="w-7 h-7 text-green-700" />,
-            gradient: "from-[#b7f8db] to-[#50a7c2]",
-            iconBg: "bg-green-100",
-        },
-        {
-            title: "Total Completed Lost Reports",
-            value: totalCompletedLostReports,
-            icon: <CheckCircleIcon className="w-7 h-7 text-red-700" />,
-            gradient: "from-[#fbc2eb] to-[#a6c1ee]",
-            iconBg: "bg-red-100",
-        },
-    ];
-
+        const stats = [
+    {
+        title: "Total Lost Reports",
+        value: totalLostReports,
+        icon: <AlertTriangleIcon className="w-7 h-7 text-[#1D4ED8]" />, // Indigo-700
+        gradient: "from-[#DBEAFE] to-[#3B82F6]", // Blue-ish gradient
+        iconBg: "bg-[#E0F2FE]", // Light Blue-100
+    },
+    {
+        title: "Total Found Reports",
+        value: totalFoundReports,
+        icon: <PackageCheckIcon className="w-7 h-7 text-[#047857]" />, // Emerald-700
+        gradient: "from-[#D1FAE5] to-[#10B981]", // Green gradient
+        iconBg: "bg-[#ECFDF5]", // Light Green-100
+    },
+    {
+        title: "Total Pending Lost Reports",
+        value: totalPendingLostReports,
+        icon: <HourglassIcon className="w-7 h-7 text-[#CA8A04]" />, // Amber-600
+        gradient: "from-[#FEF3C7] to-[#FACC15]", // Yellow/Amber gradient
+        iconBg: "bg-[#FFFBEB]", // Light Amber-100
+    },
+    {
+        title: "Total Completed Lost Reports",
+        value: totalCompletedLostReports,
+        icon: <CheckCircleIcon className="w-7 h-7 text-[#0F766E]" />, // Teal-700
+        gradient: "from-[#CCFBF1] to-[#14B8A6]", // Teal gradient
+        iconBg: "bg-[#E6FFFA]", // Light Teal-100
+    },
+];
     return (
         <div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
