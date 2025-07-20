@@ -1,0 +1,1 @@
+{"version":3,"file":"FoundCounter.js","sourceRoot":"","sources":["../../../src/infrastructure/schemas/FoundCounter.ts"],"names":[],"mappings":";;;;;AAAA,sDAAgC;AAEhC,IAAM,kBAAkB,GAAG,IAAI,kBAAQ,CAAC,MAAM,CAAC;IAC3C,GAAG,EAAE;QACD,IAAI,EAAE,MAAM;QACZ,QAAQ,EAAE,IAAI;KACjB;CACJ,CAAC,CAAA;AAEF,IAAM,YAAY,GAAG,kBAAQ,CAAC,KAAK,CAAC,cAAc,EAAE,kBAAkB,CAAC,CAAC;AACxE,kBAAe,YAAY,CAAC"}

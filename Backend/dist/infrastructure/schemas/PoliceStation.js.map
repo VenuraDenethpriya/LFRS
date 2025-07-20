@@ -1,0 +1,1 @@
+{"version":3,"file":"PoliceStation.js","sourceRoot":"","sources":["../../../src/infrastructure/schemas/PoliceStation.ts"],"names":[],"mappings":";;;;;AAAA,sDAAgC;AAEhC,IAAM,aAAa,GAAG,IAAI,kBAAQ,CAAC,MAAM,CAAC;IACtC,IAAI,EAAE;QACF,IAAI,EAAE,MAAM;QACZ,QAAQ,EAAE,IAAI;KACjB;CACJ,CAAC,CAAA;AAEF,kBAAe,kBAAQ,CAAC,KAAK,CAAC,eAAe,EAAE,aAAa,CAAC,CAAA"}
