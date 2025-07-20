@@ -66,18 +66,18 @@ export default function ItemReports() {
 
 
 
-    useEffect(() => {
-        if (isLostError) {
-            toast.error(lostError?.message || "An error occurred while fetching lost reports.", {
-                className: "messagePosition"
-            });
-        }
-        if (isFoundError) {
-            toast.error(foundError?.message || "An error occurred while fetching found reports.", {
-                className: "messagePosition"
-            });
-        }
-    }, [isLostError, isFoundError, lostError, foundError]);
+    // useEffect(() => {
+    //     if (isLostError) {
+    //         toast.error(lostError?.message || "An error occurred while fetching lost reports.", {
+    //             className: "messagePosition"
+    //         });
+    //     }
+    //     if (isFoundError) {
+    //         toast.error(foundError?.message || "An error occurred while fetching found reports.", {
+    //             className: "messagePosition"
+    //         });
+    //     }
+    // }, [isLostError, isFoundError, lostError, foundError, isLoaded]);
 
     useEffect(() => {
         if (user) {
@@ -85,7 +85,7 @@ export default function ItemReports() {
         } else {
             console.log("User object is not yet available.");
         }
-    }, [user]);
+    }, [user, isLoaded]);
 
     // Function to clear all filter inputs
     const handleClearFilters = () => {
@@ -99,7 +99,14 @@ export default function ItemReports() {
     };
 
     if (!isLoaded) {
-        return null;
+        return (
+            <section className="bg-slate-50 min-h-screen">
+                <div className="container mx-auto p-4">
+                    <h1 className="text-3xl font-bold text-blue-950 mb-6">Lost and Found Items Reports</h1>
+                    <p className="text-center text-gray-600">Loading user data...</p>
+                </div>
+            </section>
+        )
     }
 
     if (isLostLoading || isFoundLoading) {
@@ -274,8 +281,33 @@ export default function ItemReports() {
                                     <SelectContent>
                                         {/* REMOVED: <SelectItem value="">Police Station</SelectItem> */}
                                         <SelectItem value="Colombo Central">Colombo Central</SelectItem>
+                                        <SelectItem value="Colombo North">Colombo North</SelectItem>
+                                        <SelectItem value="Colombo South">Colombo South</SelectItem>
+                                        <SelectItem value="Borella">Borella</SelectItem>
+                                        <SelectItem value="Nugegoda">Nugegoda</SelectItem>
+                                        <SelectItem value="Mount Lavinia">Mount Lavinia</SelectItem>
+                                        <SelectItem value="Wellawatte">Wellawatte</SelectItem>
+                                        <SelectItem value="Kirulapone">Kirulapone</SelectItem>
                                         <SelectItem value="Kandy">Kandy</SelectItem>
+                                        <SelectItem value="Peradeniya">Peradeniya</SelectItem>
+                                        <SelectItem value="Katugastota">Katugastota</SelectItem>
                                         <SelectItem value="Galle">Galle</SelectItem>
+                                        <SelectItem value="Hikkaduwa">Hikkaduwa</SelectItem>
+                                        <SelectItem value="Ambalangoda">Ambalangoda</SelectItem>
+                                        <SelectItem value="Matara">Matara</SelectItem>
+                                        <SelectItem value="Tangalle">Tangalle</SelectItem>
+                                        <SelectItem value="Negombo">Negombo</SelectItem>
+                                        <SelectItem value="Gampaha">Gampaha</SelectItem>
+                                        <SelectItem value="Wattala">Wattala</SelectItem>
+                                        <SelectItem value="Kurunegala">Kurunegala</SelectItem>
+                                        <SelectItem value="Anuradhapura">Anuradhapura</SelectItem>
+                                        <SelectItem value="Polonnaruwa">Polonnaruwa</SelectItem>
+                                        <SelectItem value="Trincomalee">Trincomalee</SelectItem>
+                                        <SelectItem value="Jaffna">Jaffna</SelectItem>
+                                        <SelectItem value="Vavuniya">Vavuniya</SelectItem>
+                                        <SelectItem value="Batticaloa">Batticaloa</SelectItem>
+                                        <SelectItem value="Ampara">Ampara</SelectItem>
+
                                     </SelectContent>
                                 </Select>
 
@@ -286,9 +318,32 @@ export default function ItemReports() {
                                     </SelectTrigger>
                                     <SelectContent>
                                         {/* REMOVED: <SelectItem value="">District</SelectItem> */}
+                                        <SelectItem value="Ampara">Ampara</SelectItem>
+                                        <SelectItem value="Anuradhapura">Anuradhapura</SelectItem>
+                                        <SelectItem value="Badulla">Badulla</SelectItem>
+                                        <SelectItem value="Batticaloa">Batticaloa</SelectItem>
                                         <SelectItem value="Colombo">Colombo</SelectItem>
-                                        <SelectItem value="Kandy">Kandy</SelectItem>
                                         <SelectItem value="Galle">Galle</SelectItem>
+                                        <SelectItem value="Gampaha">Gampaha</SelectItem>
+                                        <SelectItem value="Hambantota">Hambantota</SelectItem>
+                                        <SelectItem value="Jaffna">Jaffna</SelectItem>
+                                        <SelectItem value="Kalutara">Kalutara</SelectItem>
+                                        <SelectItem value="Kandy">Kandy</SelectItem>
+                                        <SelectItem value="Kegalle">Kegalle</SelectItem>
+                                        <SelectItem value="Kilinochchi">Kilinochchi</SelectItem>
+                                        <SelectItem value="Kurunegala">Kurunegala</SelectItem>
+                                        <SelectItem value="Mannar">Mannar</SelectItem>
+                                        <SelectItem value="Matale">Matale</SelectItem>
+                                        <SelectItem value="Matara">Matara</SelectItem>
+                                        <SelectItem value="Monaragala">Monaragala</SelectItem>
+                                        <SelectItem value="Mullaitivu">Mullaitivu</SelectItem>
+                                        <SelectItem value="Nuwara Eliya">Nuwara Eliya</SelectItem>
+                                        <SelectItem value="Polonnaruwa">Polonnaruwa</SelectItem>
+                                        <SelectItem value="Puttalam">Puttalam</SelectItem>
+                                        <SelectItem value="Ratnapura">Ratnapura</SelectItem>
+                                        <SelectItem value="Trincomalee">Trincomalee</SelectItem>
+                                        <SelectItem value="Vavuniya">Vavuniya</SelectItem>
+
                                     </SelectContent>
                                 </Select>
 
