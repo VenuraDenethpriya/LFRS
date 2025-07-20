@@ -20,7 +20,7 @@ const frontendUrl = process.env.FRONTEND_URI;
 app.use(express.json());
 
 app.use(cors({ 
-    origin:`http://65.0.99.199`,
+    origin: frontendUrl,
     credentials: true,
     allowedHeaders: [
         "Authorization", 
