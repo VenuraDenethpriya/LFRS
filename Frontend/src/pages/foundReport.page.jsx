@@ -65,6 +65,9 @@ function FoundReport() {
             setLicenseNo('')
             setPassportNo('')
             navigate('/reports')
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000)
             // window.location.reload()
             toast.success('Your has been successfully created found report.')
 

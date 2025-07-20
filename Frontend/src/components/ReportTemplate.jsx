@@ -86,7 +86,7 @@ const ReportTemplate = ({ data }) => (
       <Text style={styles.subHeader}>Lost & Found Reporting System</Text>
 
       {/* Title */}
-      <Text style={styles.title}>{data.type === 'lost' ? 'Lost Item Report' : 'Found Item Report'}</Text>
+      <Text style={styles.title}>{data.type == 'lost' ? 'Lost Item Report' : 'Found Item Report'}</Text>
 
       {/* Report Content */}
       <View style={styles.section}>
@@ -98,7 +98,7 @@ const ReportTemplate = ({ data }) => (
 
         <View style={styles.row}>
           <Text style={styles.label}>Item:</Text>
-          <Text style={styles.value}>{data.item}</Text>
+          <Text style={styles.value}>{data.items}</Text>
         </View>
 
         <View style={styles.row}>
@@ -120,7 +120,7 @@ const ReportTemplate = ({ data }) => (
 
         <View style={styles.row}>
           <Text style={styles.label}>{data.type === 'lost' ? 'Lost Date:' : 'Found Date:'}</Text>
-          <Text style={styles.value}>{data.date}</Text>
+          <Text style={styles.value}>{data.type === 'lost' ? data.dateOfLost : data.dateOfFound }</Text> 
         </View>
 
         <View style={styles.row}>
@@ -135,7 +135,7 @@ const ReportTemplate = ({ data }) => (
 
         <View style={styles.row}>
           <Text style={styles.label}>Police Station:</Text>
-          <Text style={styles.value}>{data.station}</Text>
+          <Text style={styles.value}>{data.nearestPoliceStation}</Text>
         </View>
 
         <View style={styles.divider} />

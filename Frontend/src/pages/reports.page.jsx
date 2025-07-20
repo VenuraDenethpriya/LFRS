@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import LostCard from "@/LostCard"
 import FoundCard from "@/FoundCard"
 import { useEffect, useMemo, useState } from "react"
-import { useGetFoundReportsQuery, useGetLostReportsQuery } from "@/lib/api"
+import { useGetCategoriesQuery, useGetFoundReportsQuery, useGetLostReportsQuery } from "@/lib/api"
 import LoadCard from "@/LoadCard"
 import { ToastContainer, toast } from 'react-toastify';
 import { useAuth, useUser } from "@clerk/clerk-react"
@@ -63,6 +63,76 @@ export default function ItemReports() {
 
     const { data: lostReports, isLoading: isLostLoading, isError: isLostError, error: lostError } = useGetLostReportsQuery(filters)
     const { data: foundReports, isLoading: isFoundLoading, isError: isFoundError, error: foundError } = useGetFoundReportsQuery(filters)
+    const { data: categoriesList } = useGetCategoriesQuery();
+
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const filteredCategories = categoriesList?.filter((category) =>
+        category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const policeStations = [
+        { id: 1, name: "Colombo Central" },
+        { id: 2, name: "Colombo North" },
+        { id: 3, name: "Colombo South" },
+        { id: 4, name: "Borella" },
+        { id: 5, name: "Nugegoda" },
+        { id: 6, name: "Mount Lavinia" },
+        { id: 7, name: "Wellawatte" },
+        { id: 8, name: "Kirulapone" },
+        { id: 9, name: "Kandy" },
+        { id: 10, name: "Peradeniya" },
+        { id: 11, name: "Katugastota" },
+        { id: 12, name: "Galle" },
+        { id: 13, name: "Hikkaduwa" },
+        { id: 14, name: "Ambalangoda" },
+        { id: 15, name: "Matara" },
+        { id: 16, name: "Tangalle" },
+        { id: 17, name: "Negombo" },
+        { id: 18, name: "Gampaha" },
+        { id: 19, name: "Wattala" },
+        { id: 20, name: "Kurunegala" },
+        { id: 21, name: "Anuradhapura" },
+        { id: 22, name: "Polonnaruwa" },
+        { id: 23, name: "Trincomalee" },
+        { id: 24, name: "Jaffna" },
+        { id: 25, name: "Vavuniya" },
+        { id: 26, name: "Batticaloa" },
+        { id: 27, name: "Ampara" }
+    ];
+
+    const [searchTermPoliceStation, setSearchTermPoliceStation] = useState('');
+    const filteredPoliceStations = policeStations.filter((policeStation) =>
+        policeStation.name.toLowerCase().includes(searchTermPoliceStation.toLowerCase())
+    );
+
+    const districts = [
+        { id: 1, name: "Ampara" },
+        { id: 2, name: "Anuradhapura" },
+        { id: 3, name: "Badulla" },
+        { id: 4, name: "Batticaloa" },
+        { id: 5, name: "Colombo" },
+        { id: 6, name: "Galle" },
+        { id: 7, name: "Gampaha" },
+        { id: 8, name: "Hambantota" },
+        { id: 9, name: "Jaffna" },
+        { id: 10, name: "Kalutara" },
+        { id: 11, name: "Kandy" },
+        { id: 12, name: "Kegalle" },
+        { id: 13, name: "Kilinochchi" },
+        { id: 14, name: "Kurunegala" },
+        { id: 15, name: "Mannar" },
+        { id: 16, name: "Matale" },
+        { id: 17, name: "Matara" },
+        { id: 18, name: "Monaragala" },
+        { id: 19, name: "Mullaitivu" },
+        { id: 20, name: "Nuwara Eliya" },
+        { id: 21, name: "Polonnaruwa" },
+        { id: 22, name: "Puttalam" },
+        { id: 23, name: "Ratnapura" },
+        { id: 24, name: "Trincomalee" },
+        { id: 25, name: "Vavuniya" }
+    ];
 
 
 
@@ -96,6 +166,8 @@ export default function ItemReports() {
         setDistrict('');
         setDate('');
         setStatus('');
+        setSearchTermPoliceStation('');
+        setSearchTerm('');
     };
 
     if (!isLoaded) {
@@ -257,11 +329,15 @@ export default function ItemReports() {
                                         <SelectValue placeholder="Select Category" /> {/* Updated placeholder text */}
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {/* REMOVED: <SelectItem value="">Category</SelectItem> */}
-                                        <SelectItem value="Phone">Phone</SelectItem>
-                                        <SelectItem value="ID Cards">ID Cards</SelectItem>
-                                        <SelectItem value="Clothing">Clothing</SelectItem>
-                                        <SelectItem value="Bag">Bag</SelectItem>
+                                        <Input
+                                            placeholder="Search category"
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                        />
+                                        {filteredCategories.map((category) => (
+                                            <SelectItem key={category._id} value={category.name}>
+                                                {category.name}
+                                            </SelectItem>
+                                        ))}
                                     </SelectContent>
                                 </Select>
 
@@ -280,33 +356,12 @@ export default function ItemReports() {
                                     </SelectTrigger>
                                     <SelectContent>
                                         {/* REMOVED: <SelectItem value="">Police Station</SelectItem> */}
-                                        <SelectItem value="Colombo Central">Colombo Central</SelectItem>
-                                        <SelectItem value="Colombo North">Colombo North</SelectItem>
-                                        <SelectItem value="Colombo South">Colombo South</SelectItem>
-                                        <SelectItem value="Borella">Borella</SelectItem>
-                                        <SelectItem value="Nugegoda">Nugegoda</SelectItem>
-                                        <SelectItem value="Mount Lavinia">Mount Lavinia</SelectItem>
-                                        <SelectItem value="Wellawatte">Wellawatte</SelectItem>
-                                        <SelectItem value="Kirulapone">Kirulapone</SelectItem>
-                                        <SelectItem value="Kandy">Kandy</SelectItem>
-                                        <SelectItem value="Peradeniya">Peradeniya</SelectItem>
-                                        <SelectItem value="Katugastota">Katugastota</SelectItem>
-                                        <SelectItem value="Galle">Galle</SelectItem>
-                                        <SelectItem value="Hikkaduwa">Hikkaduwa</SelectItem>
-                                        <SelectItem value="Ambalangoda">Ambalangoda</SelectItem>
-                                        <SelectItem value="Matara">Matara</SelectItem>
-                                        <SelectItem value="Tangalle">Tangalle</SelectItem>
-                                        <SelectItem value="Negombo">Negombo</SelectItem>
-                                        <SelectItem value="Gampaha">Gampaha</SelectItem>
-                                        <SelectItem value="Wattala">Wattala</SelectItem>
-                                        <SelectItem value="Kurunegala">Kurunegala</SelectItem>
-                                        <SelectItem value="Anuradhapura">Anuradhapura</SelectItem>
-                                        <SelectItem value="Polonnaruwa">Polonnaruwa</SelectItem>
-                                        <SelectItem value="Trincomalee">Trincomalee</SelectItem>
-                                        <SelectItem value="Jaffna">Jaffna</SelectItem>
-                                        <SelectItem value="Vavuniya">Vavuniya</SelectItem>
-                                        <SelectItem value="Batticaloa">Batticaloa</SelectItem>
-                                        <SelectItem value="Ampara">Ampara</SelectItem>
+                                        <Input placeholder="Search police station" onChange={(e) => setSearchTermPoliceStation(e.target.value)} />
+                                        {filteredPoliceStations.map((policeStation) => (
+                                            <SelectItem key={policeStation.id} value={policeStation.name}>
+                                                {policeStation.name}
+                                            </SelectItem>
+                                        ))}
 
                                     </SelectContent>
                                 </Select>
@@ -317,33 +372,13 @@ export default function ItemReports() {
                                         <SelectValue placeholder="Select District" /> {/* Updated placeholder text */}
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {/* REMOVED: <SelectItem value="">District</SelectItem> */}
-                                        <SelectItem value="Ampara">Ampara</SelectItem>
-                                        <SelectItem value="Anuradhapura">Anuradhapura</SelectItem>
-                                        <SelectItem value="Badulla">Badulla</SelectItem>
-                                        <SelectItem value="Batticaloa">Batticaloa</SelectItem>
-                                        <SelectItem value="Colombo">Colombo</SelectItem>
-                                        <SelectItem value="Galle">Galle</SelectItem>
-                                        <SelectItem value="Gampaha">Gampaha</SelectItem>
-                                        <SelectItem value="Hambantota">Hambantota</SelectItem>
-                                        <SelectItem value="Jaffna">Jaffna</SelectItem>
-                                        <SelectItem value="Kalutara">Kalutara</SelectItem>
-                                        <SelectItem value="Kandy">Kandy</SelectItem>
-                                        <SelectItem value="Kegalle">Kegalle</SelectItem>
-                                        <SelectItem value="Kilinochchi">Kilinochchi</SelectItem>
-                                        <SelectItem value="Kurunegala">Kurunegala</SelectItem>
-                                        <SelectItem value="Mannar">Mannar</SelectItem>
-                                        <SelectItem value="Matale">Matale</SelectItem>
-                                        <SelectItem value="Matara">Matara</SelectItem>
-                                        <SelectItem value="Monaragala">Monaragala</SelectItem>
-                                        <SelectItem value="Mullaitivu">Mullaitivu</SelectItem>
-                                        <SelectItem value="Nuwara Eliya">Nuwara Eliya</SelectItem>
-                                        <SelectItem value="Polonnaruwa">Polonnaruwa</SelectItem>
-                                        <SelectItem value="Puttalam">Puttalam</SelectItem>
-                                        <SelectItem value="Ratnapura">Ratnapura</SelectItem>
-                                        <SelectItem value="Trincomalee">Trincomalee</SelectItem>
-                                        <SelectItem value="Vavuniya">Vavuniya</SelectItem>
-
+                                        {
+                                            districts.map((district) => (
+                                                <SelectItem key={district.id} value={district.name}>
+                                                    {district.name}
+                                                </SelectItem>
+                                            ))
+                                        }
                                     </SelectContent>
                                 </Select>
 
@@ -413,11 +448,7 @@ export default function ItemReports() {
                                         referanceNo={report.referanceNo}
                                         phoneNo={report.phoneNo}
                                         type="lost"
-                                        createdAt={new Date(report.createdAt).toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric'
-                                        })}
+                                        createdAt={report.createdAt}
                                         district={report.district}
                                     />
                                 ))}

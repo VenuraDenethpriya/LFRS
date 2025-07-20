@@ -110,9 +110,10 @@ function ReportView() {
                         {/* Action Buttons */}
                         <div className="flex flex-wrap gap-4 pt-6 border-t">
                             <PDFDownloadLink
-                                document={<ReportTemplate data={report} />}
+                                document={<ReportTemplate data={{ ...report, type }} />}
                                 fileName={type === "lost" ? `Lost-Report-${report?.referanceNo}.pdf` : `Found-Report-${report?.referanceNo}.pdf`}
                             >
+
                                 {({ blob, url, loading, error }) => (
                                     <Button
                                         className=" mt-2"
@@ -196,20 +197,12 @@ function ReportView() {
                                             <p className="text-gray-700">{report.passportNo}</p>
                                         </div>
                                     )}
-                                    {
-                                        report.licenseNo && (
-                                            <div>
-                                                <label className="block text-sm text-gray-500 mb-1">License No</label>
-                                                <p className="text-gray-700">{report.licenseNo}</p>
-                                            </div>
-                                        )
-                                    }
                                 </div>
                             </CardContent>
                         </Card>
 
 
-                        
+
 
                         {/* Report Information */}
                         <Card className="shadow-md border border-gray-200">
