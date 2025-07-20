@@ -51,7 +51,7 @@ function DashboardBarChart(props) {
       </CardContent>
 
       <CardFooter className="flex-col items-start gap-2 text-sm bg-white/50 text-blue-700">
-        <div className="leading-none">Reports grouped by month</div>
+        <div className="leading-none">Reports {props.description}</div>
       </CardFooter>
     </Card>
   );

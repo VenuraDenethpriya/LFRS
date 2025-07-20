@@ -34,6 +34,12 @@ function LostCard(props) {
 
         { props.item }
     }
+    const isEditable = () => {
+    const createdAt = new Date(props.createdAt);
+    const now = new Date();
+    const diffInMs = now - createdAt;
+    return diffInMs <= 60 * 60 * 1000; // 1 hour
+};
     return (
         <div>
             <Card className="mb-4 cursor-pointer">
@@ -138,31 +144,29 @@ function LostCard(props) {
                                             {
                                                 props.status !== 'FOUND' && (
                                                     <div className="flex items-center gap-2">
-                                                        {
-                                                            Date.now() - new Date(props.createdAt).getTime() <= 60 * 60 * 1000 ? (
-                                                                <div className="mt-2">
-                                                                    <EditLostForm
-                                                                        item={props.item}
-                                                                        id={props.id}
-                                                                        name={props.name}
-                                                                        date={props.date}
-                                                                        phoneNo={props.phoneNo}
-                                                                        location={props.location}
-                                                                        station={props.station}
-                                                                    />
-                                                                </div>
-                                                            ) : (
-                                                                <Button
-                                                                    className="mt-2"
-                                                                    variant="outline"
-                                                                    onClick={() =>
-                                                                        toast.error("Editing is only allowed within 1 hour of report creation.")
-                                                                    }
-                                                                >
-                                                                    Edit
-                                                                </Button>
-                                                            )
-                                                        }
+                                                        {isEditable() ? (
+                                                            <div className="mt-2">
+                                                                <EditLostForm
+                                                                    item={props.item}
+                                                                    id={props.id}
+                                                                    name={props.name}
+                                                                    date={props.date}
+                                                                    phoneNo={props.phoneNo}
+                                                                    location={props.location}
+                                                                    station={props.station}
+                                                                />
+                                                            </div>
+                                                        ) : (
+                                                            <Button
+                                                                className="mt-2"
+                                                                variant="outline"
+                                                                onClick={() =>
+                                                                    toast.error("Editing is only allowed within 1 hour of report creation.")
+                                                                }
+                                                            >
+                                                                Edit
+                                                            </Button>
+                                                        )}
                                                     </div>
                                                 )
                                             }
