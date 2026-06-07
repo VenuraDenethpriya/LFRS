@@ -25,10 +25,10 @@ pipeline{
                 sh 'docker compose build'
             }
         }
-        stage("Security Scan"){
-            steps{
-                sh 'trivy image backend:latest'
-                sh 'trivy image frontend:latet'
+        stage('Security Scan') {
+            steps {
+                sh 'trivy image lfrs-pipeline-backend:latest'
+                sh 'trivy image lfrs-pipeline-frontend:latest'
             }
         }
         stage("Deploy on EC2"){
