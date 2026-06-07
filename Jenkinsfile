@@ -11,7 +11,6 @@ pipeline{
         VONAGE_API_KEY = credentials("VONAGE_API_KEY")
         VONAGE_API_SECRET = credentials("VONAGE_API_SECRET")
         VITE_BASE_URL = credentials("VITE_BASE_URL")
-        VITE_CLERK_PUBLISHABLE_KEY = credentials("VITE_CLERK_PUBLISHABLE_KEY")
         VITE_CLOUDINARY_URL = credentials("VITE_CLOUDINARY_URL")
     }
 
