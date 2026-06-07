@@ -1,0 +1,15 @@
+services:
+  database:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+      
+  backend: 
+    build: ./Backend
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./Frontend
+    ports:
+      - "3000:80"
