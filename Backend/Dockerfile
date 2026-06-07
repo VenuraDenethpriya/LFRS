@@ -10,6 +10,8 @@ COPY . .
 
 EXPOSE 8000
 
-RUN npm run dev
+RUN chmod +x node_modules/.bin/tsc
+
+RUN npm run build
 
 CMD [ "npm", "start" ]
