@@ -16,13 +16,19 @@ const app = express();
 const publishableKey = process.env.VITE_CLERK_PUBLISHABLE_KEY;
 const secretKey = process.env.CLERK_SECRET_KEY
 const frontendUrl = process.env.FRONTEND_URI;
+
 app.use(express.json());
 
-app.use('*', cors({
-    // origin: frontendUrl,
-     origin: frontendUrl,
+app.use(cors({ 
+    origin: frontendUrl,
     credentials: true,
-    allowedHeaders: ["Authorization", "Content-Type", "Origin", "Accept"],
+    allowedHeaders: [
+        "Authorization", 
+        "Content-Type", 
+        "Origin", 
+        "Accept"
+    ],
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
 }));
 
 app.use(clerkMiddleware({
